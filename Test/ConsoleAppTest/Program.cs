@@ -10,6 +10,7 @@ using System;
 using static Core.Domain.Enums;
 using Core.Infrastructure.MongoDBMappings;
 using MongoDB.Bson.Serialization.Serializers;
+using MongoDB.Bson.Serialization.IdGenerators;
 
 namespace ConsoleAppTest
 {
@@ -31,21 +32,24 @@ namespace ConsoleAppTest
             var services = new ServiceCollection();
 
             MongoDBSettings mongoDBSettings = new MongoDBSettings()
-            { 
+            {
                 DatabaseName = "RPG"
             };
 
+            BsonClassMap.RegisterClassMap<EntityBase>(cm =>
+            {
+                cm.SetIsRootClass(true);
+                cm.MapIdProperty(e => e.Id).SetIdGenerator(StringObjectIdGenerator.Instance);
+            });
 
             BsonClassMap.RegisterClassMap<Unit>(cm =>
             {
                 cm.AutoMap();
-                cm.MapIdProperty(u => u.Id);
             });
 
             BsonClassMap.RegisterClassMap<Class>(cm =>
             {
                 cm.AutoMap();
-                cm.MapIdProperty(c => c.Id);
                 cm.MapMember(c => c.AttackType).SetSerializer(new EnumSerializer<AttackType>(BsonType.String));
                 cm.MapMember(c => c.DamageType).SetSerializer(new EnumSerializer<DamageType>(BsonType.String));
             });

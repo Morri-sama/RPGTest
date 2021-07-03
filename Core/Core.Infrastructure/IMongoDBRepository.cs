@@ -5,8 +5,13 @@ using System.Text;
 
 namespace Core.Infrastructure
 {
-    public interface IMongoDBRepository<T> : IRepository<T> where T : EntityBase
+    public interface IMongoDBRepository<T, TId> : IRepository<T, TId> where T : EntityBase
     {
 
+    }
+
+    public interface IMongoDBRepository<T> : IMongoDBRepository<T, string> where T : EntityBase
+    {
+         
     }
 }

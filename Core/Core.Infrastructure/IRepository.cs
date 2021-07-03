@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Core.Infrastructure
 {
-    public interface IRepository<T> where T : EntityBase
+    public interface IRepository<T, TId> where T : EntityBase
     {
-        public T GetById(long id);
+        public T GetById(TId id);
         public void Insert(T entity);
         public void Update(T entity);
         public void Delete(T entity);
