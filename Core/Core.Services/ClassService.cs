@@ -8,9 +8,9 @@ namespace Core.Services
 {
     public class ClassService : IClassService
     {
-        private readonly IRepository<Class> _repository;
+        private readonly IMongoDBRepository<Class> _repository;
 
-        public ClassService(IRepository<Class> repository)
+        public ClassService(IMongoDBRepository<Class> repository)
         {
             _repository = repository;
         }

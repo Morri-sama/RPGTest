@@ -1,4 +1,5 @@
 ﻿using Core.Domain;
+using Core.Infrastructure.Settings;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -8,15 +9,16 @@ using System.Text;
 
 namespace Core.Infrastructure
 {
-    public class MongoDBRepository<T> : IRepository<T> where T : EntityBase
+    public class MongoDBRepository<T> : IMongoDBRepository<T> where T : EntityBase
     {
         private readonly IMongoCollection<T> _mongoCollection;
-        private readonly IMongoDatabase _mongoDatabase;
 
-        public MongoDBRepository(IMongoDatabase mongoDatabase)
+        public MongoDBRepository(IMongoClient mongoClient, MongoDBSettings settings)
         {
-            _mongoDatabase = mongoDatabase;
-            _mongoCollection = _mongoDatabase.GetCollection<T>(nameof(T));
+            string typeName = settings.CollectionNames.GetValueOrDefault(typeof(T).Name);
+
+            _mongoCollection = mongoClient.GetDatabase(settings.DatabaseName)
+                                          .GetCollection<T>(typeName);
         }
 
         public void Delete(T entity)
