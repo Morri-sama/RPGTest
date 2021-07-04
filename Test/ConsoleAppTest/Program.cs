@@ -38,18 +38,26 @@ namespace ConsoleAppTest
 
             BsonClassMap.RegisterClassMap<EntityBase>(cm =>
             {
+                cm.AutoMap();
                 cm.SetIsRootClass(true);
-                cm.MapIdProperty(e => e.Id).SetIdGenerator(StringObjectIdGenerator.Instance);
+                cm.IdMemberMap.SetIdGenerator(StringObjectIdGenerator.Instance)
+                                           .SetSerializer(new StringSerializer());
             });
 
             BsonClassMap.RegisterClassMap<Unit>(cm =>
             {
                 cm.AutoMap();
+
+                //cm.MapIdProperty(e => e.Id).SetIdGenerator(StringObjectIdGenerator.Instance)
+                //           .SetSerializer(new StringSerializer());
             });
 
             BsonClassMap.RegisterClassMap<Class>(cm =>
             {
                 cm.AutoMap();
+
+                //cm.MapIdProperty(e => e.Id).SetIdGenerator(StringObjectIdGenerator.Instance)
+                //           .SetSerializer(new StringSerializer());
                 cm.MapMember(c => c.AttackType).SetSerializer(new EnumSerializer<AttackType>(BsonType.String));
                 cm.MapMember(c => c.DamageType).SetSerializer(new EnumSerializer<DamageType>(BsonType.String));
             });
