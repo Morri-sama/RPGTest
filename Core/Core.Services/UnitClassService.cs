@@ -25,6 +25,13 @@ namespace Core.Services
             return _repository.Get();
         }
 
+        public UnitClass GetById(string id)
+        {
+            var unitClass = _repository.GetById(id);
+
+            return unitClass;
+        }
+
         public void Insert(UnitClass unitClass)
         {
             _repository.Insert(unitClass);

@@ -16,5 +16,6 @@ namespace Core.Domain
         public int X { get; set; }
         public int Y { get; set; }
 
+        public string ClassId { get; set; }
     }
 }

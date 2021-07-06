@@ -11,5 +11,6 @@ namespace Core.Services
         public void Insert(UnitClass unitClass);
         public void Update(UnitClass unitClass);
         public void Delete(UnitClass unitClass);
+        public UnitClass GetById(string id);
     }
 }
