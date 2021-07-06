@@ -37,5 +37,19 @@ namespace WebApi.Controllers
 
             return Ok();
         }
+
+        [HttpPost]
+        public IActionResult Put([FromBody] UnitClass unitClass)
+        {
+            _unitClassService.Update(unitClass);
+
+            return Ok();
+        }
+
+        [HttpDelete("id")]
+        public IActionResult Delete(string id)
+        {
+            return Ok();
+        }
     }
 }

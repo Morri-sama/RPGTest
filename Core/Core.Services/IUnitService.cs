@@ -13,5 +13,6 @@ namespace RPGTest.Core.Services
         public void Delete(Unit unit);
         public void Attack(Unit attacker, Unit attackedUnit);
         public void Move(string unitId, int x, int y);
+        public bool CanAttack(string attackerUnitId, string attackedUnitId);
     }
 }

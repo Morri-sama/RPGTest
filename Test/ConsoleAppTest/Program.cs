@@ -10,6 +10,8 @@ using MongoDB.Bson.Serialization.IdGenerators;
 using RPGTest.Core.Domain;
 using RPGTest.Core.Infrastructure.Settings;
 using RPGTest.Core.Infrastructure;
+using System.Text.RegularExpressions;
+using System.Data;
 
 namespace ConsoleAppTest
 {
@@ -19,57 +21,97 @@ namespace ConsoleAppTest
         {
             Console.WriteLine("XDDD");
 
-            var client = new MongoClient();
-            var dbList = client.ListDatabases().ToList();
+            //var client = new MongoClient();
+            //var dbList = client.ListDatabases().ToList();
 
-            foreach (var db in dbList)
+            //foreach (var db in dbList)
+            //{
+            //    Console.WriteLine(db);
+            //}
+
+            //var services = new ServiceCollection();
+
+            //MongoDBSettings mongoDBSettings = new MongoDBSettings()
+            //{
+            //    DatabaseName = "RPG"
+            //};
+
+            //BsonClassMap.RegisterClassMap<EntityBase>(cm =>
+            //{
+            //    cm.SetIsRootClass(true);
+            //    cm.MapIdProperty(e => e.Id);
+            //    cm.IdMemberMap.SetIdGenerator(StringObjectIdGenerator.Instance)
+            //                               .SetSerializer(new StringSerializer());
+            //});
+
+            //BsonClassMap.RegisterClassMap<Unit>(cm =>
+            //{
+            //    cm.AutoMap();
+            //});
+
+            //BsonClassMap.RegisterClassMap<UnitClass>(cm =>
+            //{
+            //    cm.AutoMap();
+            //    cm.MapMember(c => c.AttackType).SetSerializer(new EnumSerializer<AttackType>(BsonType.String));
+            //    cm.MapMember(c => c.DamageType).SetSerializer(new EnumSerializer<DamageType>(BsonType.String));
+            //});
+
+            //mongoDBSettings.CollectionNames.Add("Unit", "Units");
+            //mongoDBSettings.CollectionNames.Add("UnitClass", "UnitClasses");
+
+            //services.AddSingleton(mongoDBSettings);
+            //services.AddSingleton<IMongoClient>(new MongoClient(@"mongodb://localhost:27017"));
+            //services.AddScoped<IMongoDBRepository<UnitClass>, MongoDBRepository<UnitClass>>();
+            //services.AddScoped<IMongoDBRepository<Unit>, MongoDBRepository<Unit>>();
+            //services.AddScoped<IUnitClassService, UnitClassService>();
+
+            //var serviceProvider = services.BuildServiceProvider();
+
+            //var classService = serviceProvider.GetRequiredService<IUnitClassService>();
+
+            //classService.Insert(new UnitClass { Name = "Тест", DamageType = DamageType.Magical, AttackType = AttackType.Melee });
+
+            //Console.WriteLine(")))))))");
+
+            Regex regex = new Regex(@"(?<BaseDamage>БазовыйУрон)|(?<MissingHealth>НедостающееЗдоровье)|(?<MaxHealth>МаксимальноеЗдоровье)|(?<Operation>\+|\-|\*|\/)");
+            string formula = "БазовыйУрон + НедостающееЗдоровье / МаксимальноеЗдоровье * БазовыйУрон";
+
+            var matchCollection = regex.Matches(formula);
+
+            string result = string.Empty;
+
+            for (int i = 0; i < matchCollection.Count; i++)
             {
-                Console.WriteLine(db);
+                var match = matchCollection[i];
+
+
+                if (match.Success)
+                {
+                    result += match.Value switch
+                    {
+                        "БазовыйУрон" => 10,
+                        "НедостающееЗдоровье" => 20,
+                        "МаксимальноеЗдоровье" => 200,
+                        _ => match.Value
+                    };
+                }
             }
 
-            var services = new ServiceCollection();
+            Console.WriteLine(result);
 
-            MongoDBSettings mongoDBSettings = new MongoDBSettings()
-            {
-                DatabaseName = "RPG"
-            };
+            DataTable dataTable = new DataTable();
 
-            BsonClassMap.RegisterClassMap<EntityBase>(cm =>
-            {
-                cm.SetIsRootClass(true);
-                cm.MapIdProperty(e => e.Id);
-                cm.IdMemberMap.SetIdGenerator(StringObjectIdGenerator.Instance)
-                                           .SetSerializer(new StringSerializer());
-            });
+            var xdddd = dataTable.Compute(result,"");
 
-            BsonClassMap.RegisterClassMap<Unit>(cm =>
-            {
-                cm.AutoMap();
-            });
+            Console.WriteLine(xdddd);
 
-            BsonClassMap.RegisterClassMap<UnitClass>(cm =>
-            {
-                cm.AutoMap();
-                cm.MapMember(c => c.AttackType).SetSerializer(new EnumSerializer<AttackType>(BsonType.String));
-                cm.MapMember(c => c.DamageType).SetSerializer(new EnumSerializer<DamageType>(BsonType.String));
-            });
+            string mageFormula = "";
+            string mageCondition = "ТекущаяМана > 0";
+            string postCondition = "ТекущаяМана = ОкруглитьДоЦелого(ТекущаяМана / 2)";
 
-            mongoDBSettings.CollectionNames.Add("Unit", "Units");
-            mongoDBSettings.CollectionNames.Add("UnitClass", "UnitClasses");
+            "(?<ChangableField>.*) = (?<RoundUp>ОкруглитьДоЦелого(?<RoundUpExpression>.*))";
 
-            services.AddSingleton(mongoDBSettings);
-            services.AddSingleton<IMongoClient>(new MongoClient(@"mongodb://localhost:27017"));
-            services.AddScoped<IMongoDBRepository<UnitClass>, MongoDBRepository<UnitClass>>();
-            services.AddScoped<IMongoDBRepository<Unit>, MongoDBRepository<Unit>>();
-            services.AddScoped<IUnitClassService, UnitClassService>();
 
-            var serviceProvider = services.BuildServiceProvider();
-
-            var classService = serviceProvider.GetRequiredService<IUnitClassService>();
-
-            classService.Insert(new UnitClass { Name = "Тест", DamageType = DamageType.Magical, AttackType = AttackType.Melee });
-
-            Console.WriteLine(")))))))");
 
             Console.ReadLine();
         }
