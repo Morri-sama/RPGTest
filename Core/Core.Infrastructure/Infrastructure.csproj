@@ -2,10 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>RPGTest.Core.Infrastructure</RootNamespace>
+    <AssemblyName>rpgtest.core.infrastructure</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core.Domain\Core.Domain.csproj" />
+    <ProjectReference Include="..\Core.Domain\Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

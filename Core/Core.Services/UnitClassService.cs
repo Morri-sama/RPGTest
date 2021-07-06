@@ -1,10 +1,10 @@
-﻿using Core.Domain;
-using Core.Infrastructure;
+﻿using RPGTest.Core.Domain;
+using RPGTest.Core.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Services
+namespace RPGTest.Core.Services
 {
     public class UnitClassService : IUnitClassService
     {

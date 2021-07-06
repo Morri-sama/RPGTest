@@ -1,13 +1,13 @@
-﻿using Core.Domain;
-using Core.Infrastructure.Settings;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
+using RPGTest.Core.Domain;
+using RPGTest.Core.Infrastructure.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace Core.Infrastructure
+namespace RPGTest.Core.Infrastructure
 {
     public class MongoDBRepository<T, TId> : IMongoDBRepository<T, TId> where T : EntityBase
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Domain
+namespace RPGTest.Core.Domain
 {
     public abstract class EntityBase<TId>
     {

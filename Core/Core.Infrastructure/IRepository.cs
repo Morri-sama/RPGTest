@@ -1,10 +1,10 @@
-﻿using Core.Domain;
+﻿using RPGTest.Core.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace Core.Infrastructure
+namespace RPGTest.Core.Infrastructure
 {
     public interface IRepository<T, TId> where T : EntityBase
     {

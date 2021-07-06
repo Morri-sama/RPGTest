@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{668E2A31-4786-4D4E-B4BF-C69149B13716}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Domain", "Core\Core.Domain\Core.Domain.csproj", "{45B4D02C-AD8A-483A-99CD-41F1CD74A18E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Core\Core.Domain\Domain.csproj", "{45B4D02C-AD8A-483A-99CD-41F1CD74A18E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Infrastructure", "Core\Core.Infrastructure\Core.Infrastructure.csproj", "{7B0DB25F-F983-40AF-9914-82B9F0D56785}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Core\Core.Infrastructure\Infrastructure.csproj", "{7B0DB25F-F983-40AF-9914-82B9F0D56785}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Services", "Core\Core.Services\Core.Services.csproj", "{6586BFFC-16BB-452D-97AF-CA04CC904473}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Core\Core.Services\Services.csproj", "{6586BFFC-16BB-452D-97AF-CA04CC904473}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{72FBBC47-21BE-46E6-AF79-E6F2B6412601}"
 EndProject

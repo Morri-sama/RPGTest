@@ -1,25 +1,18 @@
-using Core.Domain;
-using Core.Infrastructure;
-using Core.Infrastructure.Settings;
-using Core.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.IdGenerators;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using static Core.Domain.Enums;
+using RPGTest.Core.Domain;
+using RPGTest.Core.Infrastructure;
+using RPGTest.Core.Infrastructure.Settings;
+using RPGTest.Core.Services;
+using static RPGTest.Core.Domain.Enums;
 
 namespace WebApi
 {

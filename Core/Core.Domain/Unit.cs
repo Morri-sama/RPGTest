@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using static Core.Domain.Enums;
+using static RPGTest.Core.Domain.Enums;
 
-namespace Core.Domain
+namespace RPGTest.Core.Domain
 {
     public class Unit : EntityBase
     {

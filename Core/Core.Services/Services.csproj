@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>rpgtest.core.services</AssemblyName>
+    <RootNamespace>RPGTest.Core.Services</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core.Domain\Domain.csproj" />
+    <ProjectReference Include="..\Core.Infrastructure\Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

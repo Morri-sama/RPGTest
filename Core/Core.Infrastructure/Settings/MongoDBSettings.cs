@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Infrastructure.Settings
+namespace RPGTest.Core.Infrastructure.Settings
 {
     public class MongoDBSettings
     {

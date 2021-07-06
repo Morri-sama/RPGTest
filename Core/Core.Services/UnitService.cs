@@ -1,9 +1,9 @@
-﻿using Core.Domain;
+﻿using RPGTest.Core.Domain;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Services
+namespace RPGTest.Core.Services
 {
     public class UnitService : IUnitService
     {

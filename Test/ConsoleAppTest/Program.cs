@@ -1,15 +1,15 @@
-﻿using Core.Domain;
-using Core.Infrastructure;
-using Core.Infrastructure.Settings;
-using Core.Services;
+﻿using RPGTest.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using System;
-using static Core.Domain.Enums;
+using static RPGTest.Core.Domain.Enums;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Bson.Serialization.IdGenerators;
+using RPGTest.Core.Domain;
+using RPGTest.Core.Infrastructure.Settings;
+using RPGTest.Core.Infrastructure;
 
 namespace ConsoleAppTest
 {
