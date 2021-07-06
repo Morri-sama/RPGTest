@@ -5,7 +5,7 @@ using static Core.Domain.Enums;
 
 namespace Core.Domain
 {
-    public class Class : EntityBase
+    public class UnitClass : EntityBase
     {
         public string Name { get; set; }
         public string Description { get; set; }

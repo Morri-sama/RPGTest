@@ -82,7 +82,6 @@ namespace Core.Infrastructure
             return _mongoCollection.AsQueryable().ToList();
         }
 
-
         public T GetById(string id)
         {
             var filter = Builders<T>.Filter.Eq(t => t.Id, id.ToString());

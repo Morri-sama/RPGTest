@@ -8,7 +8,6 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Driver;
 using System;
 using static Core.Domain.Enums;
-using Core.Infrastructure.MongoDBMappings;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Bson.Serialization.IdGenerators;
 
@@ -28,7 +27,6 @@ namespace ConsoleAppTest
                 Console.WriteLine(db);
             }
 
-
             var services = new ServiceCollection();
 
             MongoDBSettings mongoDBSettings = new MongoDBSettings()
@@ -38,8 +36,8 @@ namespace ConsoleAppTest
 
             BsonClassMap.RegisterClassMap<EntityBase>(cm =>
             {
-                cm.AutoMap();
                 cm.SetIsRootClass(true);
+                cm.MapIdProperty(e => e.Id);
                 cm.IdMemberMap.SetIdGenerator(StringObjectIdGenerator.Instance)
                                            .SetSerializer(new StringSerializer());
             });
@@ -47,36 +45,29 @@ namespace ConsoleAppTest
             BsonClassMap.RegisterClassMap<Unit>(cm =>
             {
                 cm.AutoMap();
-
-                //cm.MapIdProperty(e => e.Id).SetIdGenerator(StringObjectIdGenerator.Instance)
-                //           .SetSerializer(new StringSerializer());
             });
 
-            BsonClassMap.RegisterClassMap<Class>(cm =>
+            BsonClassMap.RegisterClassMap<UnitClass>(cm =>
             {
                 cm.AutoMap();
-
-                //cm.MapIdProperty(e => e.Id).SetIdGenerator(StringObjectIdGenerator.Instance)
-                //           .SetSerializer(new StringSerializer());
                 cm.MapMember(c => c.AttackType).SetSerializer(new EnumSerializer<AttackType>(BsonType.String));
                 cm.MapMember(c => c.DamageType).SetSerializer(new EnumSerializer<DamageType>(BsonType.String));
             });
 
-
             mongoDBSettings.CollectionNames.Add("Unit", "Units");
-            mongoDBSettings.CollectionNames.Add("Class", "Classes");
+            mongoDBSettings.CollectionNames.Add("UnitClass", "UnitClasses");
 
             services.AddSingleton(mongoDBSettings);
             services.AddSingleton<IMongoClient>(new MongoClient(@"mongodb://localhost:27017"));
-            services.AddScoped<IMongoDBRepository<Class>, MongoDBRepository<Class>>();
+            services.AddScoped<IMongoDBRepository<UnitClass>, MongoDBRepository<UnitClass>>();
             services.AddScoped<IMongoDBRepository<Unit>, MongoDBRepository<Unit>>();
-            services.AddScoped<IClassService, ClassService>();
+            services.AddScoped<IUnitClassService, UnitClassService>();
 
             var serviceProvider = services.BuildServiceProvider();
 
-            var classService = serviceProvider.GetRequiredService<IClassService>();
+            var classService = serviceProvider.GetRequiredService<IUnitClassService>();
 
-            classService.Insert(new Class { Name = "Тест", DamageType = DamageType.Magical, AttackType = AttackType.Melee });
+            classService.Insert(new UnitClass { Name = "Тест", DamageType = DamageType.Magical, AttackType = AttackType.Melee });
 
             Console.WriteLine(")))))))");
 
