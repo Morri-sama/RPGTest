@@ -12,6 +12,7 @@ using RPGTest.Core.Infrastructure.Settings;
 using RPGTest.Core.Infrastructure;
 using System.Text.RegularExpressions;
 using System.Data;
+using org.mariuszgromada.math.mxparser;
 
 namespace ConsoleAppTest
 {
@@ -109,8 +110,21 @@ namespace ConsoleAppTest
             string mageCondition = "ТекущаяМана > 0";
             string postCondition = "ТекущаяМана = ОкруглитьДоЦелого(ТекущаяМана / 2)";
 
-            "(?<ChangableField>.*) = (?<RoundUp>ОкруглитьДоЦелого(?<RoundUpExpression>.*))";
+            var pattern = "(?<ChangeableField>.*) = (?<RoundUp>ОкруглитьДоЦелого(?<RoundUpExpression>.*))";
 
+            var x = 0.3 + 0.3 + 0.3;
+
+            Console.WriteLine(x);
+
+            Expression expression = new Expression("100 - ceil(100 / 2)");
+            double result2 = expression.calculate();
+
+            Expression expression2 = new Expression("5 < 1");
+            double result3 = expression2.calculate();
+
+
+
+            Console.WriteLine(result3);
 
 
             Console.ReadLine();

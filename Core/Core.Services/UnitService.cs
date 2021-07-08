@@ -1,4 +1,5 @@
-﻿using RPGTest.Core.Domain;
+﻿using org.mariuszgromada.math.mxparser;
+using RPGTest.Core.Domain;
 using RPGTest.Core.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -30,7 +31,7 @@ namespace RPGTest.Core.Services
 
                 var damage = attackerClass.AttackType switch
                 {
-                    AttackType.Melee => attackerClass.BaseDamage ,
+                    AttackType.Melee => attackerClass.BaseDamage,
                     AttackType.Range => attackerClass.BaseDamage,
                     AttackType.Magical => attackerClass.BaseDamage,
                     _ => throw new NotImplementedException()
@@ -59,6 +60,30 @@ namespace RPGTest.Core.Services
             };
 
             return canAttack;
+        }
+
+        public int CalculateDamage(string unitId)
+        {
+            var unit = _unitRepository.GetById(unitId);
+            var unitClass = _unitClassService.GetById(unit.ClassId);
+
+            if (!string.IsNullOrEmpty(unitClass.Condition))
+            {
+                Expression expression = new Expression(unitClass.Condition);
+                bool result = Convert.ToBoolean(expression.calculate());
+
+                if (result)
+                {
+                    Expression expression1 = new Expression(unitClass.Formula);
+                    return expression1.calculate();
+                }
+                else
+                {
+                    Expression expression1 = new Expression(unitClass.Formula2);
+                }
+            }
+
+            return 0;
         }
 
         public void Delete(Unit unit)

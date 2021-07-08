@@ -15,6 +15,7 @@ namespace RPGTest.Core.Domain
         public string Condition { get; set; }
         public string PostTrueConditionAction { get; set; }
         public string PostFalseConditionAction { get; set; }
+        public string ConditionActionPropertyName { get; set; }
         public AttackType AttackType { get; set; }
         public DamageType DamageType { get; set; }
     }
