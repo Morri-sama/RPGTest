@@ -75,7 +75,7 @@ namespace RPGTest.Core.Services
                 if (result)
                 {
                     Expression expression1 = new Expression(unitClass.Formula);
-                    return expression1.calculate();
+                    //return expression1.calculate();
                 }
                 else
                 {
@@ -84,6 +84,12 @@ namespace RPGTest.Core.Services
             }
 
             return 0;
+        }
+
+        private string SetFormulaVariables(string condition, Unit unit, UnitClass unitClass)
+        {
+
+            return string.Empty;
         }
 
         public void Delete(Unit unit)
