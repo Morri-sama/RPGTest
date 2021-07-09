@@ -74,58 +74,64 @@ namespace ConsoleAppTest
 
             //Console.WriteLine(")))))))");
 
-            Regex regex = new Regex(@"(?<BaseDamage>БазовыйУрон)|(?<MissingHealth>НедостающееЗдоровье)|(?<MaxHealth>МаксимальноеЗдоровье)|(?<Operation>\+|\-|\*|\/)");
-            string formula = "БазовыйУрон + НедостающееЗдоровье / МаксимальноеЗдоровье * БазовыйУрон";
+            //Regex regex = new Regex(@"(?<BaseDamage>БазовыйУрон)|(?<MissingHealth>НедостающееЗдоровье)|(?<MaxHealth>МаксимальноеЗдоровье)|(?<Operation>\+|\-|\*|\/)");
+            //string formula = "БазовыйУрон + НедостающееЗдоровье / МаксимальноеЗдоровье * БазовыйУрон";
 
-            var matchCollection = regex.Matches(formula);
+            //var matchCollection = regex.Matches(formula);
 
-            string result = string.Empty;
+            //string result = string.Empty;
 
-            for (int i = 0; i < matchCollection.Count; i++)
-            {
-                var match = matchCollection[i];
-
-
-                if (match.Success)
-                {
-                    result += match.Value switch
-                    {
-                        "БазовыйУрон" => 10,
-                        "НедостающееЗдоровье" => 20,
-                        "МаксимальноеЗдоровье" => 200,
-                        _ => match.Value
-                    };
-                }
-            }
-
-            Console.WriteLine(result);
-
-            DataTable dataTable = new DataTable();
-
-            var xdddd = dataTable.Compute(result,"");
-
-            Console.WriteLine(xdddd);
-
-            string mageFormula = "";
-            string mageCondition = "ТекущаяМана > 0";
-            string postCondition = "ТекущаяМана = ОкруглитьДоЦелого(ТекущаяМана / 2)";
-
-            var pattern = "(?<ChangeableField>.*) = (?<RoundUp>ОкруглитьДоЦелого(?<RoundUpExpression>.*))";
-
-            var x = 0.3 + 0.3 + 0.3;
-
-            Console.WriteLine(x);
-
-            Expression expression = new Expression("100 - ceil(100 / 2)");
-            double result2 = expression.calculate();
-
-            Expression expression2 = new Expression("5 < 1");
-            double result3 = expression2.calculate();
+            //for (int i = 0; i < matchCollection.Count; i++)
+            //{
+            //    var match = matchCollection[i];
 
 
+            //    if (match.Success)
+            //    {
+            //        result += match.Value switch
+            //        {
+            //            "БазовыйУрон" => 10,
+            //            "НедостающееЗдоровье" => 20,
+            //            "МаксимальноеЗдоровье" => 200,
+            //            _ => match.Value
+            //        };
+            //    }
+            //}
 
-            Console.WriteLine(result3);
+            //Console.WriteLine(result);
 
+            //DataTable dataTable = new DataTable();
+
+            //var xdddd = dataTable.Compute(result,"");
+
+            //Console.WriteLine(xdddd);
+
+            //string mageFormula = "";
+            //string mageCondition = "ТекущаяМана > 0";
+            //string postCondition = "ТекущаяМана = ОкруглитьДоЦелого(ТекущаяМана / 2)";
+
+            //var pattern = "(?<ChangeableField>.*) = (?<RoundUp>ОкруглитьДоЦелого(?<RoundUpExpression>.*))";
+
+            //var x = 0.3 + 0.3 + 0.3;
+
+            //Console.WriteLine(x);
+
+            //Expression expression = new Expression("100 - ceil(100 / 2)");
+            //double result2 = expression.calculate();
+
+            //Expression expression2 = new Expression("5 < 1");
+            //double result3 = expression2.calculate();
+
+
+
+            //Console.WriteLine(result3);
+
+            string xdddddd= "БазовыйУрон + НедостающееЗдоровье / МаксимальноеЗдоровье * ceil(БазовыйУрон)";
+            xdddddd = Regex.Replace(xdddddd, "БазовыйУрон", 100.ToString());
+
+            Console.WriteLine(xdddddd);
+
+            Console.WriteLine(((int)AttackType.Magical).ToString());
 
             Console.ReadLine();
         }

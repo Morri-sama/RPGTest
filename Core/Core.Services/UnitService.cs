@@ -4,6 +4,7 @@ using RPGTest.Core.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.RegularExpressions;
 using static RPGTest.Core.Domain.Enums;
 
 namespace RPGTest.Core.Services
@@ -29,13 +30,18 @@ namespace RPGTest.Core.Services
             {
                 var attackerClass = _unitClassService.GetById(attacker.ClassId);
 
-                var damage = attackerClass.AttackType switch
-                {
-                    AttackType.Melee => attackerClass.BaseDamage,
-                    AttackType.Range => attackerClass.BaseDamage,
-                    AttackType.Magical => attackerClass.BaseDamage,
-                    _ => throw new NotImplementedException()
-                };
+                var distance = _coordinatesService.CalculateDistance(x1: attacker.X,
+                                                                     y1: attacker.Y,
+                                                                     x2: attackedUnit.X,
+                                                                     y2: attackedUnit.Y);
+
+                var damage = CalculateDamage(attacker.Id, distance);
+
+                var x = attackedUnit.HP - damage;
+
+                attackedUnit.HP = x >= 0 ? x : 0;
+
+                Update(attackedUnit);
             }
         }
 
@@ -51,45 +57,46 @@ namespace RPGTest.Core.Services
 
             var attackerAttackType = _unitClassService.GetById(attackerUnit.ClassId).AttackType;
 
-            bool canAttack = attackerAttackType switch
-            {
-                AttackType.Melee => 10 > distance,
-                AttackType.Range => 350 > distance,
-                AttackType.Magical => 150 > distance,
-                _ => throw new NotImplementedException()
-            };
-
-            return canAttack;
+            return (int)attackerAttackType >= distance;
         }
 
-        public int CalculateDamage(string unitId)
+        public int CalculateDamage(string unitId, double distance)
         {
             var unit = _unitRepository.GetById(unitId);
             var unitClass = _unitClassService.GetById(unit.ClassId);
 
             if (!string.IsNullOrEmpty(unitClass.Condition))
             {
-                Expression expression = new Expression(unitClass.Condition);
+
+                Expression expression = new Expression(SetFormulaVariables(unitClass.Condition, unit, unitClass, distance));
                 bool result = Convert.ToBoolean(expression.calculate());
 
                 if (result)
                 {
-                    Expression expression1 = new Expression(unitClass.Formula);
-                    //return expression1.calculate();
+                    Expression expression1 = new Expression(SetFormulaVariables(unitClass.Formula, unit, unitClass, distance));
+                    return (int)expression1.calculate();
                 }
                 else
                 {
-                    Expression expression1 = new Expression(unitClass.Formula2);
+                    Expression expression1 = new Expression(SetFormulaVariables(unitClass.Formula2, unit, unitClass, distance));
+                    return (int)expression1.calculate();
                 }
             }
 
             return 0;
         }
 
-        private string SetFormulaVariables(string condition, Unit unit, UnitClass unitClass)
+        private string SetFormulaVariables(string condition, Unit unit, UnitClass unitClass, double distance)
         {
+            string result = string.Empty;
 
-            return string.Empty;
+            result = Regex.Replace(condition, "БазовыйУрон", unitClass.BaseDamage.ToString());
+            result = Regex.Replace(condition, "НедостающееЗдоровье", (unit.MaxHP - unit.HP).ToString());
+            result = Regex.Replace(condition, "МаксимальноеЗдоровье", unit.MaxHP.ToString());
+            result = Regex.Replace(condition, "ДистанцияДоЦели", distance.ToString());
+            result = Regex.Replace(condition, "РадиусАтаки", ((int)unitClass.AttackType).ToString());
+            result = Regex.Replace(condition, "ТекущаяМана", unit.Mana.ToString());
+            return result;
         }
 
         public void Delete(Unit unit)

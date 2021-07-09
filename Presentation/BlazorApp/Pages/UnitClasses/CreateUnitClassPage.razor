@@ -1,0 +1,41 @@
+﻿@page "/unitclasses/create"
+@inherits PageBase
+
+
+@foreach (var unitField in unitFields)
+{
+<MudButton OnClick="e => Add(unitField)">@unitField</MudButton>
+}
+
+<MudButton OnClick="@(e => Add("+"))">+</MudButton>
+<MudButton OnClick="@(e => Add("-"))">-</MudButton>
+<MudButton OnClick="@(e => Add("/"))">/</MudButton>
+<MudButton OnClick="@(e => Add("*"))">*</MudButton>
+<MudButton OnClick="@(e => Add("("))">(</MudButton>
+<MudButton OnClick="@(e => Add(")"))">)</MudButton>
+
+
+<MudChipSet AllClosable="true">
+    @foreach (var value in values)
+    {
+        <MudChip Text="@value"></MudChip>
+    }
+</MudChipSet>
+
+
+
+@code{
+    List<string> values = new List<string>();
+    List<string> unitFields = new List<string>()
+{
+        "БазовыйУрон",
+        "НедостающееЗдоровье",
+        "МаксимальноеЗдоровье",
+        "ДистанцияДоЦели",
+        "РадиусАтаки",
+        "ТекущаяМана"
+    };
+
+    public void Add(string value) => values.Add(value);
+
+}

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RPGTest.Core.Services
 {
-    public class CoordinatesSerivce : ICoordinatesService
+    public class CoordinatesService : ICoordinatesService
     {
         public double CalculateDistance(int x1, int y1, int x2, int y2)
         {
