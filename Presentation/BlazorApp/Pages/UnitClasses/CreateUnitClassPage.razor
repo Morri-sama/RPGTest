@@ -1,41 +1,127 @@
 ﻿@page "/unitclasses/create"
 @inherits PageBase
 
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-4">
+    <MudText Typo="Typo.h4" Align="Align.Left" Color="Color.Primary">Новый класс юнита</MudText>
+    <br />
+    <EditForm Model="_formContext">
+        <MudTextField Label="Название"
+                      @bind-Value="_formContext.Name" />
+        <MudTextField Label="Описание"
+                      @bind-Value="_formContext.Description" />
+        <MudSelect T="int" Label="Тип атаки">
+            <MudSelectItem T="int" Value="(int)(AttackType.Melee)">
+                Ближняя
+            </MudSelectItem>
+            <MudSelectItem T="int" Value="(int)(AttackType.Range)">
+                Дальняя
+            </MudSelectItem>
+            <MudSelectItem T="int" Value="(int)(AttackType.Magical)">
+                Магическая
+            </MudSelectItem>
+        </MudSelect>
+        <MudSelect T="int" Label="Тип урона">
+            <MudSelectItem T="int" Value="(int)(DamageType.Physical)">
+                Физический
+            </MudSelectItem>
+            <MudSelectItem T="int" Value="(int)(DamageType.Magical)">
+                Магический
+            </MudSelectItem>
+        </MudSelect>
+        <MudTextField Label="Базовый урон"
+                      @bind-Value="_formContext.BaseDamage" />
 
-@foreach (var unitField in unitFields)
-{
-<MudButton OnClick="e => Add(unitField)">@unitField</MudButton>
-}
 
-<MudButton OnClick="@(e => Add("+"))">+</MudButton>
-<MudButton OnClick="@(e => Add("-"))">-</MudButton>
-<MudButton OnClick="@(e => Add("/"))">/</MudButton>
-<MudButton OnClick="@(e => Add("*"))">*</MudButton>
-<MudButton OnClick="@(e => Add("("))">(</MudButton>
-<MudButton OnClick="@(e => Add(")"))">)</MudButton>
+        <MudField Label="Условие" Variant="Variant.Text">
+            @foreach (var unitField in unitFields)
+            {
+                <MudButton OnClick="e => Add(unitField)">@unitField</MudButton>
+            }
 
+            <MudButton OnClick="@(e => Add("<="))">@("<=") </MudButton>
+            <MudButton OnClick="@(e => Add(">="))">>=</MudButton>
+            <MudButton OnClick="@(e => Add("="))">=</MudButton>
+            <MudButton OnClick="@(e => Add("+"))">+</MudButton>
+            <MudButton OnClick="@(e => Add("-"))">-</MudButton>
+            <MudButton OnClick="@(e => Add("/"))">/</MudButton>
+            <MudButton OnClick="@(e => Add("*"))">*</MudButton>
+            <MudButton OnClick="@(e => Add("("))">(</MudButton>
+            <MudButton OnClick="@(e => Add(")"))">)</MudButton>
 
-<MudChipSet AllClosable="true">
-    @foreach (var value in values)
+            <MudChipSet AllClosable="true"
+                        OnClose="OnClose">
+                @foreach (var value in _formulaValues)
+                {
+                    <MudChip Text="@value"></MudChip>
+                }
+            </MudChipSet>
+        </MudField>
+
+        <MudField Label="Формула урона" Variant="Variant.Text">
+            @foreach (var unitField in unitFields)
+            {
+                <MudButton OnClick="e => Add(unitField)">@unitField</MudButton>
+            }
+
+            <MudButton OnClick="@(e => Add("+"))">+</MudButton>
+            <MudButton OnClick="@(e => Add("-"))">-</MudButton>
+            <MudButton OnClick="@(e => Add("/"))">/</MudButton>
+            <MudButton OnClick="@(e => Add("*"))">*</MudButton>
+            <MudButton OnClick="@(e => Add("("))">(</MudButton>
+            <MudButton OnClick="@(e => Add(")"))">)</MudButton>
+
+            <MudChipSet AllClosable="true"
+                        OnClose="OnClose">
+                @foreach (var value in _formulaValues)
+                {
+                    <MudChip Text="@value"></MudChip>
+                }
+            </MudChipSet>
+        </MudField>
+
+        <MudField Label="Формула урона, если условие не выполняется" Variant="Variant.Text">
+            @foreach (var unitField in unitFields)
+            {
+                <MudButton OnClick="e => Add(unitField)">@unitField</MudButton>
+            }
+
+            <MudButton OnClick="@(e => Add("+"))">+</MudButton>
+            <MudButton OnClick="@(e => Add("-"))">-</MudButton>
+            <MudButton OnClick="@(e => Add("/"))">/</MudButton>
+            <MudButton OnClick="@(e => Add("*"))">*</MudButton>
+            <MudButton OnClick="@(e => Add("("))">(</MudButton>
+            <MudButton OnClick="@(e => Add(")"))">)</MudButton>
+
+            <MudChipSet AllClosable="true"
+                        OnClose="OnClose">
+                @foreach (var value in _formulaValues)
+                {
+                    <MudChip Text="@value"></MudChip>
+                }
+            </MudChipSet>
+        </MudField>
+    </EditForm>
+
+</MudContainer>
+
+@*@foreach (var unitField in unitFields)
     {
-        <MudChip Text="@value"></MudChip>
+    <MudButton OnClick="e => Add(unitField)">@unitField</MudButton>
     }
-</MudChipSet>
+
+    <MudButton OnClick="@(e => Add("+"))">+</MudButton>
+    <MudButton OnClick="@(e => Add("-"))">-</MudButton>
+    <MudButton OnClick="@(e => Add("/"))">/</MudButton>
+    <MudButton OnClick="@(e => Add("*"))">*</MudButton>
+    <MudButton OnClick="@(e => Add("("))">(</MudButton>
+    <MudButton OnClick="@(e => Add(")"))">)</MudButton>
 
 
+    <MudChipSet AllClosable="true">
+        @foreach (var value in values)
+        {
+            <MudChip Text="@value"></MudChip>
+        }
+    </MudChipSet>*@
 
-@code{
-    List<string> values = new List<string>();
-    List<string> unitFields = new List<string>()
-{
-        "БазовыйУрон",
-        "НедостающееЗдоровье",
-        "МаксимальноеЗдоровье",
-        "ДистанцияДоЦели",
-        "РадиусАтаки",
-        "ТекущаяМана"
-    };
 
-    public void Add(string value) => values.Add(value);
-
-}

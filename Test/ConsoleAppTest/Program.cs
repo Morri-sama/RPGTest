@@ -119,19 +119,19 @@ namespace ConsoleAppTest
             //Expression expression = new Expression("100 - ceil(100 / 2)");
             //double result2 = expression.calculate();
 
-            //Expression expression2 = new Expression("5 < 1");
+            //Expression expression2 = new Expression("5 != 4");
             //double result3 = expression2.calculate();
 
 
 
             //Console.WriteLine(result3);
 
-            string xdddddd= "БазовыйУрон + НедостающееЗдоровье / МаксимальноеЗдоровье * ceil(БазовыйУрон)";
-            xdddddd = Regex.Replace(xdddddd, "БазовыйУрон", 100.ToString());
+            //string xdddddd= "БазовыйУрон + НедостающееЗдоровье / МаксимальноеЗдоровье * ceil(БазовыйУрон)";
+            //xdddddd = Regex.Replace(xdddddd, "БазовыйУрон", 100.ToString());
 
-            Console.WriteLine(xdddddd);
+            //Console.WriteLine(xdddddd);
 
-            Console.WriteLine(((int)AttackType.Magical).ToString());
+            //Console.WriteLine(((int)AttackType.Magical).ToString());
 
             Console.ReadLine();
         }

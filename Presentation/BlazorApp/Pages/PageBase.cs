@@ -1,4 +1,5 @@
-﻿using BlazorApp.Services;
+﻿using AutoMapper;
+using BlazorApp.Services;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,11 @@ namespace BlazorApp.Pages
 
         [Inject]
         public IHttpService HttpService { get; init; }
+
+        [Inject]
+        public IMapper Mapper { get; init; }
+
+        [Inject]
+        public NavigationManager NavigationManager { get; init; }
     }
 }
