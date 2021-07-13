@@ -13,7 +13,7 @@ namespace BlazorApp.AutoMapper.Profiles
         public UnitClassProfile()
         {
             CreateMap<UnitClassFormContext, UnitClassDto>();
-            CreateMap<UnitClassDto, UnitClassProfile>();
+            CreateMap<UnitClassDto, UnitClassFormContext>();
         }
     }
 }

@@ -1,3 +1,16 @@
 ﻿@page "/unitclasses"
 @inherits PageBase
 
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    XDDDDDDD
+    <MudMenu Icon="@Icons.Material.Rounded.Edit" Size="Size.Small" Direction="Direction.Right">
+        <MudMenuItem OnClick="(e => NavigateToAddUnitClass())">Добавить</MudMenuItem>
+    </MudMenu>
+    <br />
+
+    <MudTable Items="_unitClasses"
+              Loading="!_isDataReady"
+              Hover="true">
+
+    </MudTable>
+</MudContainer>

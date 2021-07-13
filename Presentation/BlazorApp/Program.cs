@@ -20,7 +20,9 @@ namespace BlazorApp
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            string api = builder.Configuration["ApiUrl"];
+
+            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(api) });
             builder.Services.AddScoped<IHttpService, HttpService>();
 
             builder.Services.AddAutoMapper(new Type[]
