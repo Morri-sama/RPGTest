@@ -11,8 +11,15 @@ namespace BlazorApp.Pages.UnitClasses
     public partial class CreateUnitClassPage : PageBase
     {
         private UnitClassFormContext _formContext = new();
+
         private List<string> _formulaValues = new();
         private int _formulaCounter;
+
+        private List<string> _formula2Values = new();
+        private int _formula2Counter;
+
+        private List<string> _conditionValues = new();
+        private int _conditionCounter;
 
         public CreateUnitClassPage()
         {
@@ -24,7 +31,7 @@ namespace BlazorApp.Pages.UnitClasses
             base.OnInitialized();
         }
 
-        
+
         List<string> unitFields = new()
         {
             "БазовыйУрон",
@@ -41,9 +48,31 @@ namespace BlazorApp.Pages.UnitClasses
             _formulaCounter++;
         }
 
-        public void OnClose(MudChip mudChip)
+        public void OnFormulaChipClose(MudChip mudChip)
         {
             _formulaValues.Remove(mudChip.Text);
+        }
+
+        public void AddFormula2Value(string value)
+        {
+            _formula2Values.Add($"{value} {_formulaCounter}");
+            _formula2Counter++;
+        }
+
+        public void OnFormula2ChipClose(MudChip mudChip)
+        {
+            _formula2Values.Remove(mudChip.Text);
+        }
+
+        public void AddConditionValue(string value)
+        {
+            _conditionValues.Add($"{value} {_formulaCounter}");
+            _conditionCounter++;
+        }
+
+        public void OnConditionChipClose(MudChip mudChip)
+        {
+            _conditionValues.Remove(mudChip.Text);
         }
     }
 }
