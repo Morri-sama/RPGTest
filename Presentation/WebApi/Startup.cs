@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Net.Http.Headers;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.IdGenerators;
@@ -63,6 +64,18 @@ namespace WebApi
             services.AddScoped<IMongoDBRepository<UnitClass>, MongoDBRepository<UnitClass>>();
             services.AddScoped<IMongoDBRepository<Unit>, MongoDBRepository<Unit>>();
             services.AddScoped<IUnitClassService, UnitClassService>();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "xdd",
+                                  builder =>
+                                  {
+                                      builder.AllowAnyOrigin();
+                                      builder.AllowAnyHeader();
+                                      builder.AllowAnyMethod();
+                                  });
+            });
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -73,7 +86,14 @@ namespace WebApi
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(policy => policy.WithOrigins(@"http://localhost:32220", @"http://localhost:5000")
+                                        .AllowAnyMethod()
+                                        .WithHeaders(HeaderNames.ContentType, HeaderNames.Authorization, "x-custom-header")
+                                        .AllowCredentials());
+
+
             app.UseRouting();
+
 
             app.UseAuthorization();
 

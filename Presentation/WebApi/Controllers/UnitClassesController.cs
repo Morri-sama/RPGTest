@@ -38,7 +38,7 @@ namespace WebApi.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPut]
         public IActionResult Put([FromBody] UnitClass unitClass)
         {
             _unitClassService.Update(unitClass);

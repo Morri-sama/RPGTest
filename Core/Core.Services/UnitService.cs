@@ -65,25 +65,47 @@ namespace RPGTest.Core.Services
             var unit = _unitRepository.GetById(unitId);
             var unitClass = _unitClassService.GetById(unit.ClassId);
 
+            Expression formulaExpression = new Expression(SetFormulaVariables(unitClass.Formula, unit, unitClass, distance));
+
             if (!string.IsNullOrEmpty(unitClass.Condition))
             {
 
-                Expression expression = new Expression(SetFormulaVariables(unitClass.Condition, unit, unitClass, distance));
-                bool result = Convert.ToBoolean(expression.calculate());
+                Expression conditionExpression = new Expression(SetFormulaVariables(unitClass.Condition, unit, unitClass, distance));
+                bool result = Convert.ToBoolean(conditionExpression.calculate());
 
                 if (result)
                 {
-                    Expression expression1 = new Expression(SetFormulaVariables(unitClass.Formula, unit, unitClass, distance));
-                    return (int)expression1.calculate();
+                    return (int)formulaExpression.calculate();
                 }
                 else
                 {
-                    Expression expression1 = new Expression(SetFormulaVariables(unitClass.Formula2, unit, unitClass, distance));
-                    return (int)expression1.calculate();
+                    Expression formula2Expression = new Expression(SetFormulaVariables(unitClass.Formula2, unit, unitClass, distance));
+                    return (int)formula2Expression.calculate();
                 }
             }
 
-            return 0;
+            return (int)formulaExpression.calculate();
+        }
+
+        private void ExecActionAfterCondition(string unitId, double distance)
+        {
+            var unit = _unitRepository.GetById(unitId);
+            var unitClass = _unitClassService.GetById(unit.ClassId);
+
+            var trueProperty = unit.GetType().GetProperty(unitClass.TrueConditionActionChangeableProperty);
+            var falseProperty = unit.GetType().GetProperty(unitClass.FalseConditionActionChangeableProperty);
+
+            Expression expression = new Expression(SetFormulaVariables(unitClass.Condition, unit, unitClass, distance));
+            bool result = Convert.ToBoolean(expression.calculate());
+
+            if (result)
+            {
+                trueProperty.set
+            }
+            else
+            {
+
+            }
         }
 
         private string SetFormulaVariables(string condition, Unit unit, UnitClass unitClass, double distance)
