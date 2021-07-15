@@ -1,43 +1,45 @@
 ﻿@page "/unitclasses/create"
 @inherits PageBase
 
-<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-4">
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
     <MudText Typo="Typo.h4" Align="Align.Left" Color="Color.Primary">Новый класс юнита</MudText>
     <br />
     <EditForm Model="_formContext" OnValidSubmit="PostToApi">
         <MudTabs Position="Position.Left">
             <MudTabPanel Text="Основное">
                 <MudCard Style="margin-left: 24px; min-width: 350px;">
-                    <MudTextField Label="Название"
-                                  @bind-Value="_formContext.Name" />
-                    <MudTextField Label="Описание"
-                                  @bind-Value="_formContext.Description" />
-                    <MudSelect T="int" Label="Тип атаки">
-                        <MudSelectItem T="int" Value="(int)(AttackType.Melee)">
-                            Ближняя
-                        </MudSelectItem>
-                        <MudSelectItem T="int" Value="(int)(AttackType.Range)">
-                            Дальняя
-                        </MudSelectItem>
-                        <MudSelectItem T="int" Value="(int)(AttackType.Magical)">
-                            Магическая
-                        </MudSelectItem>
-                    </MudSelect>
-                    <MudSelect T="int" Label="Тип урона">
-                        <MudSelectItem T="int" Value="(int)(DamageType.Physical)">
-                            Физический
-                        </MudSelectItem>
-                        <MudSelectItem T="int" Value="(int)(DamageType.Magical)">
-                            Магический
-                        </MudSelectItem>
-                    </MudSelect>
-                    <MudTextField Label="Базовый урон"
-                                  @bind-Value="_formContext.BaseDamage" />
+                    <MudCardContent>
+                        <MudTextField Label="Название"
+                                      @bind-Value="_formContext.Name" />
+                        <MudTextField Label="Описание"
+                                      @bind-Value="_formContext.Description" />
+                        <MudSelect T="int" Label="Тип атаки">
+                            <MudSelectItem T="int" Value="(int)(AttackType.Melee)">
+                                Ближняя
+                            </MudSelectItem>
+                            <MudSelectItem T="int" Value="(int)(AttackType.Range)">
+                                Дальняя
+                            </MudSelectItem>
+                            <MudSelectItem T="int" Value="(int)(AttackType.Magical)">
+                                Магическая
+                            </MudSelectItem>
+                        </MudSelect>
+                        <MudSelect T="int" Label="Тип урона">
+                            <MudSelectItem T="int" Value="(int)(DamageType.Physical)">
+                                Физический
+                            </MudSelectItem>
+                            <MudSelectItem T="int" Value="(int)(DamageType.Magical)">
+                                Магический
+                            </MudSelectItem>
+                        </MudSelect>
+                        <MudTextField Label="Базовый урон"
+                                      @bind-Value="_formContext.BaseDamage" />
+                    </MudCardContent>
                 </MudCard>
             </MudTabPanel>
             <MudTabPanel Text="Условие">
                 <MudCard Style="margin-left: 24px; min-width: 350px;">
-                    <MudField Label="Условие" Variant="Variant.Text">
+                    <MudCardContent>
                         @foreach (var unitField in _unitFields)
                         {
                             <MudButton OnClick="e => AddConditionValue(unitField)">@unitField</MudButton>
@@ -54,7 +56,11 @@
                         <MudButton OnClick="@(e => AddConditionValue("("))">(</MudButton>
                         <MudButton OnClick="@(e => AddConditionValue(")"))">)</MudButton>
 
-                        <MudTextField @bind-Value="_formContext.Condition" Label="Условие" Variant="Variant.Filled" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.WaterDamage" />
+                        <MudTextField @bind-Value="_formContext.Condition"
+                                      Label="Условие"
+                                      Variant="Variant.Outlined"
+                                      Lines="5"
+                                      ReadOnly="true" />
 
                         <MudChipSet AllClosable="true"
                                     OnClose="OnConditionChipClose">
@@ -63,7 +69,7 @@
                                 <MudChip Text="@value"></MudChip>
                             }
                         </MudChipSet>
-                    </MudField>
+                    </MudCardContent>
                 </MudCard>
             </MudTabPanel>
             <MudTabPanel Text="Формула">

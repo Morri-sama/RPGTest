@@ -13,6 +13,7 @@ using RPGTest.Core.Infrastructure;
 using System.Text.RegularExpressions;
 using System.Data;
 using org.mariuszgromada.math.mxparser;
+using System.Collections.Generic;
 
 namespace ConsoleAppTest
 {
@@ -132,6 +133,22 @@ namespace ConsoleAppTest
             //Console.WriteLine(xdddddd);
 
             //Console.WriteLine(((int)AttackType.Magical).ToString());
+
+            List<string> values = new()
+            {
+                "ХддДжж 1",
+                "ЧввВвв 2",
+                "+ 3"
+            };
+
+            string result = string.Empty;
+
+            foreach (var value in values)
+            {
+                result += Regex.Match(value, "[а-яА-Я+*=z/><]*") + " ";
+            }
+
+            Console.WriteLine(result);
 
             Console.ReadLine();
         }

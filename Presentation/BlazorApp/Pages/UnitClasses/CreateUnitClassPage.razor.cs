@@ -111,9 +111,9 @@ namespace BlazorApp.Pages.UnitClasses
 
             string result = string.Empty;
 
-            foreach(var value in values)
+            foreach (var value in values)
             {
-                result += Regex.Match(value, "[^ ]* (.*)").Groups[1].Value + " ";
+                result += Regex.Match(value, @"[а-яА-Я+*=z/><]*") + " ";
             }
 
             return result;

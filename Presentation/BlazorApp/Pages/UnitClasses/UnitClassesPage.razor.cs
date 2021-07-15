@@ -16,16 +16,27 @@ namespace BlazorApp.Pages.UnitClasses
 
         }
 
+
+        protected override async Task OnInitializedAsync()
+        {
+            _unitClasses = await HttpService.GetAsync<List<UnitClassDto>>("unitclasses");
+            _isDataReady = true;
+        }
+
         public void NavigateToAddUnitClass()
         {
 
         }
 
-        protected override async Task OnInitializedAsync()
+        private void NavigateToEditUnitClass(string id)
         {
-            _unitClasses = await HttpService.GetAsync<List<UnitClassDto>>("unitclasses");            
-            _isDataReady = true;
+            //LayoutStateManager.SaveState("companies", _dataGrid.SaveLayout());
+            NavigationManager.NavigateTo($"/companies/edit/{id}");
         }
 
+        private async Task DeleteUnitClass(UnitClassDto unitClass)
+        {
+
+        }
     }
 }

@@ -17,11 +17,68 @@
                 ID
             </MudTh>
             <MudTh>
-                HP
+                Название
             </MudTh>
             <MudTh>
-
+                Описание
+            </MudTh>
+            <MudTh>
+                Базовый урон
+            </MudTh>
+            <MudTh>
+                Формула
+            </MudTh>
+            <MudTh>
+                Формула, если условие не выполняется
+            </MudTh>
+            <MudTh>
+                Условие
             </MudTh>
         </HeaderContent>
+        <RowTemplate>
+            <MudTd>
+                <MudMenu Icon="@Icons.Material.Filled.MoreVert"
+                         Direction="Direction.Left"
+                         Size="Size.Small">
+                    <MudMenuItem OnClick="(x) => { NavigateToEditUnitClass((context as UnitClassDto).Id); }">Редактировать</MudMenuItem>
+                    <MudMenuItem OnClick="async(x) => { await DeleteUnitClass(context as UnitClassDto); }">Удалить</MudMenuItem>
+                </MudMenu>
+            </MudTd>
+            <MudTd>
+                <MudText>
+                    @context.Id
+                </MudText>
+            </MudTd>
+            <MudTd>
+                <MudText>
+                    @context.Name
+                </MudText>
+            </MudTd>
+            <MudTd>
+                <MudText>
+                    @context.Description
+                </MudText>
+            </MudTd>
+            <MudTd>
+                <MudText>
+                    @context.BaseDamage
+                </MudText>
+            </MudTd>
+            <MudTd>
+                <MudText>
+                    @context.Formula
+                </MudText>
+            </MudTd>
+            <MudTd>
+                <MudText>
+                    @context.Formula2
+                </MudText>
+            </MudTd>
+            <MudTd>
+                <MudText>
+                    @context.Condition
+                </MudText>
+            </MudTd>
+        </RowTemplate>
     </MudTable>
 </MudContainer>

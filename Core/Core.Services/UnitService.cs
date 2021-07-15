@@ -100,7 +100,7 @@ namespace RPGTest.Core.Services
 
             if (result)
             {
-                trueProperty.set
+                //trueProperty.set
             }
             else
             {
