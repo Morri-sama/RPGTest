@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "Presentation\WebA
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BlazorApp", "Presentation\BlazorApp\BlazorApp.csproj", "{20865122-BFC0-4471-8743-2EA3E539FF0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dto", "Presentation\Dto\Dto.csproj", "{6A8B95A0-3FF5-432D-AB87-40A692B9893C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dto", "Presentation\Dto\Dto.csproj", "{6A8B95A0-3FF5-432D-AB87-40A692B9893C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

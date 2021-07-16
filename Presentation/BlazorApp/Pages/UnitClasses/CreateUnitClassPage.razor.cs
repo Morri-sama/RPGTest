@@ -23,6 +23,12 @@ namespace BlazorApp.Pages.UnitClasses
         private List<string> _conditionValues = new();
         private int _conditionCounter;
 
+        private List<string> _postTrueConditionValues = new();
+        private int _postTrueConditionCounter;
+
+        private List<string> _postFalseConditionValues = new();
+        private int _postFalseConditionCounter;
+
         private List<string> _unitFields = new()
         {
             "БазовыйУрон",
@@ -30,7 +36,14 @@ namespace BlazorApp.Pages.UnitClasses
             "МаксимальноеЗдоровье",
             "ДистанцияДоЦели",
             "РадиусАтаки",
-            "ТекущаяМана"
+            "ТекущаяМана",
+            "ТекущееЗдоровье"
+        };
+
+        private List<string> _changeableFields = new()
+        {
+            "ТекущаяМана",
+            "ТекущееЗдоровье"
         };
 
         public CreateUnitClassPage()
@@ -59,8 +72,7 @@ namespace BlazorApp.Pages.UnitClasses
 
         public void AddFormulaValue(string value)
         {
-            _formulaValues.Add($"{value} {_formulaCounter}");
-            _formulaCounter++;
+            _formulaValues.Add($"{value} {_formulaCounter++}");
 
             _formContext.Formula = ChipValuesToString(_formulaValues);
         }
@@ -74,8 +86,7 @@ namespace BlazorApp.Pages.UnitClasses
 
         public void AddFormula2Value(string value)
         {
-            _formula2Values.Add($"{value} {_formulaCounter}");
-            _formula2Counter++;
+            _formula2Values.Add($"{value} {_formulaCounter++}");
 
             _formContext.Formula2 = ChipValuesToString(_formula2Values);
         }
@@ -89,8 +100,7 @@ namespace BlazorApp.Pages.UnitClasses
 
         public void AddConditionValue(string value)
         {
-            _conditionValues.Add($"{value} {_formulaCounter}");
-            _conditionCounter++;
+            _conditionValues.Add($"{value} {_formulaCounter++}");
 
             _formContext.Condition = ChipValuesToString(_conditionValues);
         }
@@ -100,6 +110,34 @@ namespace BlazorApp.Pages.UnitClasses
             _conditionValues.Remove(mudChip.Text);
 
             _formContext.Condition = ChipValuesToString(_conditionValues);
+        }
+
+        public void AddPostTrueConditionValue(string value)
+        {
+            _postTrueConditionValues.Add($"{value} {_postTrueConditionCounter++}");
+
+            _formContext.PostTrueConditionAction = ChipValuesToString(_postTrueConditionValues);
+        }
+
+        public void OnTrueConditionChipClose(MudChip mudChip)
+        {
+            _postTrueConditionValues.Remove(mudChip.Text);
+
+            _formContext.PostTrueConditionAction = ChipValuesToString(_postTrueConditionValues);
+        }
+
+        public void AddPostFalseConditionValue(string value)
+        {
+            _postFalseConditionValues.Add($"{value} {_postFalseConditionCounter++}");
+
+            _formContext.PostFalseConditionAction = ChipValuesToString(_postFalseConditionValues);
+        }
+
+        public void OnFalseConditionChipClose(MudChip mudChip)
+        {
+            _postFalseConditionValues.Remove(mudChip.Text);
+
+            _formContext.PostFalseConditionAction = ChipValuesToString(_postFalseConditionValues);
         }
 
         public string ChipValuesToString(List<string> values)
