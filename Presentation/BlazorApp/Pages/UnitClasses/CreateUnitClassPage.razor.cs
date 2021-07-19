@@ -100,7 +100,7 @@ namespace BlazorApp.Pages.UnitClasses
 
         public void AddConditionValue(string value)
         {
-            _conditionValues.Add($"{value} {_formulaCounter++}");
+            _conditionValues.Add($"{value} {_conditionCounter++}");
 
             _formContext.Condition = ChipValuesToString(_conditionValues);
         }
@@ -151,7 +151,7 @@ namespace BlazorApp.Pages.UnitClasses
 
             foreach (var value in values)
             {
-                result += Regex.Match(value, @"[а-яА-Я+*=z/><]*") + " ";
+                result += Regex.Match(value, @"[а-яА-Я+*=z/><()]*") + " ";
             }
 
             return result;

@@ -118,6 +118,7 @@ namespace RPGTest.Core.Services
             result = Regex.Replace(condition, "ДистанцияДоЦели", distance.ToString());
             result = Regex.Replace(condition, "РадиусАтаки", ((int)unitClass.AttackType).ToString());
             result = Regex.Replace(condition, "ТекущаяМана", unit.Mana.ToString());
+            result = Regex.Replace(condition, "ОкруглитьВБольшуюСторону", "ceil");
             return result;
         }
 

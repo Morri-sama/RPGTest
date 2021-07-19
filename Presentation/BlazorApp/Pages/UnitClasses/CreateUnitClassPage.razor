@@ -86,6 +86,7 @@
                         <MudButton OnClick="@(e => AddFormulaValue("*"))">*</MudButton>
                         <MudButton OnClick="@(e => AddFormulaValue("("))">(</MudButton>
                         <MudButton OnClick="@(e => AddFormulaValue(")"))">)</MudButton>
+                        <MudButton OnClick="@(e => AddFormulaValue("ОкруглитьВБольшуюСторону"))">)</MudButton>
 
                         <MudTextField @bind-Value="_formContext.Formula"
                                       Label="Формула урона"
@@ -117,6 +118,7 @@
                         <MudButton OnClick="@(e => AddFormula2Value("*"))">*</MudButton>
                         <MudButton OnClick="@(e => AddFormula2Value("("))">(</MudButton>
                         <MudButton OnClick="@(e => AddFormula2Value(")"))">)</MudButton>
+                        <MudButton OnClick="@(e => AddFormula2Value("ОкруглитьВБольшуюСторону"))">)</MudButton>
 
                         <MudTextField @bind-Value="_formContext.Formula2"
                                       Label="Формула урона"
@@ -156,6 +158,21 @@
                         <MudButton OnClick="@(e => AddPostTrueConditionValue("*"))">*</MudButton>
                         <MudButton OnClick="@(e => AddPostTrueConditionValue("("))">(</MudButton>
                         <MudButton OnClick="@(e => AddPostTrueConditionValue(")"))">)</MudButton>
+                        <MudButton OnClick="@(e => AddPostTrueConditionValue("ОкруглитьВБольшуюСторону"))">)</MudButton>
+
+                        <MudTextField @bind-Value="_formContext.PostTrueConditionAction"
+                                      Label="Формула урона"
+                                      Variant="Variant.Outlined"
+                                      Lines="5"
+                                      ReadOnly="true" />
+
+                        <MudChipSet AllClosable="true"
+                                    OnClose="OnFormula2ChipClose">
+                            @foreach (var value in _postTrueConditionValues)
+                            {
+                                <MudChip Text="@value"></MudChip>
+                            }
+                        </MudChipSet>
                     </MudCardContent>
                 </MudCard>
             </MudTabPanel>
@@ -181,6 +198,21 @@
                         <MudButton OnClick="@(e => AddPostFalseConditionValue("*"))">*</MudButton>
                         <MudButton OnClick="@(e => AddPostFalseConditionValue("("))">(</MudButton>
                         <MudButton OnClick="@(e => AddPostFalseConditionValue(")"))">)</MudButton>
+                        <MudButton OnClick="@(e => AddPostFalseConditionValue("ОкруглитьВБольшуюСторону"))">)</MudButton>
+
+                        <MudTextField @bind-Value="_formContext.PostFalseConditionAction"
+                                      Label="Формула урона"
+                                      Variant="Variant.Outlined"
+                                      Lines="5"
+                                      ReadOnly="true" />
+
+                        <MudChipSet AllClosable="true"
+                                    OnClose="OnFormula2ChipClose">
+                            @foreach (var value in _postFalseConditionValues)
+                            {
+                                <MudChip Text="@value"></MudChip>
+                            }
+                        </MudChipSet>
                     </MudCardContent>
                 </MudCard>
             </MudTabPanel>
