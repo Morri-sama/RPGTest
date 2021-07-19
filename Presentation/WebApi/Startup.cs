@@ -13,6 +13,8 @@ using RPGTest.Core.Domain;
 using RPGTest.Core.Infrastructure;
 using RPGTest.Core.Infrastructure.Settings;
 using RPGTest.Core.Services;
+using System;
+using WebApi.AutoMapper.Profiles;
 using static RPGTest.Core.Domain.Enums;
 
 namespace WebApi
@@ -74,6 +76,12 @@ namespace WebApi
                                       builder.AllowAnyHeader();
                                       builder.AllowAnyMethod();
                                   });
+            });
+
+            services.AddAutoMapper(new Type[]
+            {
+                typeof(UnitProfile),
+                typeof(UnitClassProfile)
             });
 
         }

@@ -146,5 +146,9 @@ namespace RPGTest.Core.Services
             throw new NotImplementedException();
         }
 
+        public Unit GetById(string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

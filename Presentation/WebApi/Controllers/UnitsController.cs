@@ -1,4 +1,5 @@
-﻿using Dto;
+﻿using AutoMapper;
+using Dto;
 using Microsoft.AspNetCore.Mvc;
 using RPGTest.Core.Services;
 using System;
@@ -13,10 +14,12 @@ namespace WebApi.Controllers
     public class UnitsController : ControllerBase
     {
         private readonly IUnitService _unitService;
+        private readonly IMapper _mapper;
 
-        public UnitsController(IUnitService unitService)
+        public UnitsController(IUnitService unitService, IMapper mapper)
         {
             _unitService = unitService;
+            _mapper = mapper;
         }
 
         [HttpGet]

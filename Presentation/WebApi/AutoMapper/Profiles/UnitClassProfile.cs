@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace WebApi.AutoMapper.Profiles
 {
-    public class UnitProfile : Profile
+    public class UnitClassProfile : Profile
     {
-        public UnitProfile()
+        public UnitClassProfile()
         {
-            CreateMap<Unit, UnitDto>();
-            CreateMap<UnitDto, Unit>();
+            CreateMap<UnitClass, UnitClassDto>();
+            CreateMap<UnitClassDto, UnitClass>();
         }
     }
 }
