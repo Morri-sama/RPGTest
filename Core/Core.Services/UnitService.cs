@@ -3,6 +3,7 @@ using RPGTest.Core.Domain;
 using RPGTest.Core.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using System.Text.RegularExpressions;
 using static RPGTest.Core.Domain.Enums;
@@ -28,14 +29,7 @@ namespace RPGTest.Core.Services
 
             if (canAttack)
             {
-                var attackerClass = _unitClassService.GetById(attacker.ClassId);
-
-                var distance = _coordinatesService.CalculateDistance(x1: attacker.X,
-                                                                     y1: attacker.Y,
-                                                                     x2: attackedUnit.X,
-                                                                     y2: attackedUnit.Y);
-
-                var damage = CalculateDamage(attacker.Id, distance);
+                var damage = CalculateDamage(attacker.Id, attackedUnit.Id);
 
                 var x = attackedUnit.HP - damage;
 
@@ -60,31 +54,51 @@ namespace RPGTest.Core.Services
             return (int)attackerAttackType >= distance;
         }
 
-        public int CalculateDamage(string unitId, double distance)
+        public int CalculateDamage(string attackerUnitId, string attackedUnitId)
         {
-            var unit = _unitRepository.GetById(unitId);
-            var unitClass = _unitClassService.GetById(unit.ClassId);
+            var attackerUnit = _unitRepository.GetById(attackerUnitId);
+            var attackerUnitClass = _unitClassService.GetById(attackerUnit.ClassId);
 
-            Expression formulaExpression = new Expression(SetFormulaVariables(unitClass.Formula, unit, unitClass, distance));
+            var attackedUnit = _unitRepository.GetById(attackedUnitId);
+            var attackedUnitClass = _unitClassService.GetById(attackedUnit.ClassId);
 
-            if (!string.IsNullOrEmpty(unitClass.Condition))
+            double distance = _coordinatesService.CalculateDistance(x1: attackerUnit.X,
+                                                                    y1: attackerUnit.Y,
+                                                                    x2: attackedUnit.X,
+                                                                    y2: attackedUnit.Y);
+
+            int damageWithoutResist;
+
+            Expression formulaExpression = new Expression(SetFormulaVariables(attackerUnitClass.Formula, attackerUnit, attackerUnitClass, distance));
+
+            if (string.IsNullOrEmpty(attackerUnitClass.Condition))
             {
-
-                Expression conditionExpression = new Expression(SetFormulaVariables(unitClass.Condition, unit, unitClass, distance));
+                damageWithoutResist = (int)formulaExpression.calculate();
+            }
+            else
+            {
+                Expression conditionExpression = new Expression(SetFormulaVariables(attackerUnitClass.Condition, attackerUnit, attackerUnitClass, distance));
                 bool result = Convert.ToBoolean(conditionExpression.calculate());
 
                 if (result)
                 {
-                    return (int)formulaExpression.calculate();
+                    damageWithoutResist = (int)formulaExpression.calculate();
                 }
                 else
                 {
-                    Expression formula2Expression = new Expression(SetFormulaVariables(unitClass.Formula2, unit, unitClass, distance));
-                    return (int)formula2Expression.calculate();
+                    Expression formula2Expression = new Expression(SetFormulaVariables(attackerUnitClass.Formula2, attackerUnit, attackerUnitClass, distance));
+                    damageWithoutResist = (int)formula2Expression.calculate();
                 }
             }
 
-            return (int)formulaExpression.calculate();
+            int damage = attackerUnitClass.DamageType switch
+            {
+                DamageType.Physical => damageWithoutResist - attackedUnit.Armor,
+                DamageType.Magical => damageWithoutResist - attackedUnit.MagicResist,
+                _ => throw new InvalidEnumArgumentException()
+            };
+
+            return Math.Max(0, damage);
         }
 
         private void ExecActionAfterCondition(string unitId, double distance)
@@ -100,7 +114,7 @@ namespace RPGTest.Core.Services
 
             if (result)
             {
-                //trueProperty.set
+
             }
             else
             {
@@ -124,32 +138,39 @@ namespace RPGTest.Core.Services
 
         public void Delete(Unit unit)
         {
-            throw new NotImplementedException();
+            _unitRepository.Delete(unit);
         }
 
         public ICollection<Unit> GetAll()
         {
-            throw new NotImplementedException();
+            return _unitRepository.Get();
         }
 
         public void Insert(Unit unit)
         {
-            throw new NotImplementedException();
+            _unitRepository.Insert(unit);
         }
 
         public void Move(string unitId, int x, int y)
         {
-            throw new NotImplementedException();
+            var unit = GetById(unitId);
+
+            unit.X = x;
+            unit.Y = y;
+
+            Update(unit);
         }
 
         public void Update(Unit unit)
         {
-            throw new NotImplementedException();
+            _unitRepository.Update(unit);
         }
 
         public Unit GetById(string id)
         {
-            throw new NotImplementedException();
+            var unit = _unitRepository.GetById(id);
+
+            return unit;
         }
     }
 }

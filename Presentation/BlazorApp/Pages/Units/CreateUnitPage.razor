@@ -1,0 +1,57 @@
+﻿@page "/units/create"
+@inherits PageBase
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-4">
+    <MudText Typo="Typo.h4" Align="Align.Left" Color="Color.Primary">Добавление нового юнита</MudText>
+    <br />
+
+    <EditForm Model="_formContext"
+              OnValidSubmit="PostToApi">
+        <DataAnnotationsValidator />
+
+        <MudCard>
+            <MudCardContent>
+                <MudSelect T="string"
+                           Label="Класс"
+                           @bind-Value="_formContext.ClassId">
+                    @foreach (var unitClass in _unitClasses)
+                    {
+                        <MudSelectItem Value="unitClass.Id">
+                            @unitClass.Name
+                        </MudSelectItem>
+                    }
+                </MudSelect>
+
+                <MudNumericField @bind-Value="_formContext.HP"
+                                 Label="Здоровье"
+                                 Step="1" />
+
+                <MudNumericField @bind-Value="_formContext.MaxHP"
+                                 Label="Максимальное здоровье"
+                                 Step="1" />
+                <MudNumericField @bind-Value="_formContext.Mana"
+                                 Label="Мана"
+                                 Step="1" />
+                <MudNumericField @bind-Value="_formContext.MaxMana"
+                                 Label="Максимальная мана"
+                                 Step="1" />
+                <MudNumericField @bind-Value="_formContext.Armor"
+                                 Label="Броня"
+                                 Step="1" />
+                <MudNumericField @bind-Value="_formContext.MagicResist"
+                                 Label="Сопротивление магии"
+                                 Step="1" />
+                <MudNumericField @bind-Value="_formContext.X"
+                                 Label="X"
+                                 Step="1" />
+                <MudNumericField @bind-Value="_formContext.Y"
+                                 Label="Y"
+                                 Step="1" />
+            </MudCardContent>
+            <MudCardActions Class="d-flex flex-row-reverse">
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="">Добавить</MudButton>
+                <MudButton Variant="Variant.Text" Class="" OnClick="(e => NavigateBack())">Отмена</MudButton>
+            </MudCardActions>
+        </MudCard>
+    </EditForm>
+</MudContainer>

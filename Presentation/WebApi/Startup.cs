@@ -65,7 +65,9 @@ namespace WebApi
             services.AddSingleton<IMongoClient>(new MongoClient(@"mongodb://localhost:27017"));
             services.AddScoped<IMongoDBRepository<UnitClass>, MongoDBRepository<UnitClass>>();
             services.AddScoped<IMongoDBRepository<Unit>, MongoDBRepository<Unit>>();
+            services.AddScoped<ICoordinatesService, CoordinatesService>();
             services.AddScoped<IUnitClassService, UnitClassService>();
+            services.AddScoped<IUnitService, UnitService>();
 
             services.AddCors(options =>
             {

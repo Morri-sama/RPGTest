@@ -8,38 +8,38 @@ namespace RPGTest.Core.Services
 {
     public class UnitClassService : IUnitClassService
     {
-        private readonly IMongoDBRepository<UnitClass> _repository;
+        private readonly IMongoDBRepository<UnitClass> _unitClassRepository;
 
-        public UnitClassService(IMongoDBRepository<UnitClass> repository)
+        public UnitClassService(IMongoDBRepository<UnitClass> unitClassRepository)
         {
-            _repository = repository;
+            _unitClassRepository = unitClassRepository;
         }
 
         public void Delete(UnitClass unitClass)
         {
-            _repository.Delete(unitClass);
+            _unitClassRepository.Delete(unitClass);
         }
 
         public ICollection<UnitClass> GetAll()
         {
-            return _repository.Get();
+            return _unitClassRepository.Get();
         }
 
         public UnitClass GetById(string id)
         {
-            var unitClass = _repository.GetById(id);
+            var unitClass = _unitClassRepository.GetById(id);
 
             return unitClass;
         }
 
         public void Insert(UnitClass unitClass)
         {
-            _repository.Insert(unitClass);
+            _unitClassRepository.Insert(unitClass);
         }
 
         public void Update(UnitClass unitClass)
         {
-            _repository.Update(unitClass);
+            _unitClassRepository.Update(unitClass);
         }
     }
 }

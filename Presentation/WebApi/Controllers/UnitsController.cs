@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Dto;
 using Microsoft.AspNetCore.Mvc;
+using RPGTest.Core.Domain;
 using RPGTest.Core.Services;
 using System;
 using System.Collections.Generic;
@@ -29,29 +30,31 @@ namespace WebApi.Controllers
             return Ok(classes);
         }
 
-        //[HttpGet("{id}")]
-        //public IActionResult Get(string id)
-        //{
-        //    var unit = _unitService.GetById(id);
+        [HttpGet("{id}")]
+        public IActionResult Get(string id)
+        {
+            var unit = _unitService.GetById(id);
 
-        //    return Ok(unit);
-        //}
+            return Ok(unit);
+        }
 
-        //[HttpPost]
-        //public IActionResult Post([FromBody] UnitDto unit)
-        //{
-        //    _unitService.Insert(unit);
+        [HttpPost]
+        public IActionResult Post([FromBody] UnitDto unitDto)
+        {
+            var unit = _mapper.Map<Unit>(unitDto);
+            _unitService.Insert(unit);
 
-        //    return Ok();
-        //}
+            return Ok();
+        }
 
-        //[HttpPut]
-        //public IActionResult Put([FromBody] UnitDto unit)
-        //{
-        //    _unitService.Update(unit);
+        [HttpPut]
+        public IActionResult Put([FromBody] UnitDto unitDto)
+        {
+            var unit = _mapper.Map<Unit>(unitDto);
+            _unitService.Update(unit);
 
-        //    return Ok();
-        //}
+            return Ok();
+        }
 
         [HttpDelete("id")]
         public IActionResult Delete(string id)

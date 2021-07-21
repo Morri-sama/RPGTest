@@ -37,11 +37,12 @@ namespace WebApi.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] UnitClass unitClass)
+        public IActionResult Post([FromBody] UnitClassDto unitClassDto)
         {
+            var unitClass = _mapper.Map<UnitClass>(unitClassDto);
             _unitClassService.Insert(unitClass);
 
-            return Ok();
+            return CreatedAtAction("Get", new { id = unitClass.Id }, unitClass);
         }
 
         [HttpPut]
