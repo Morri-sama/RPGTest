@@ -14,6 +14,8 @@ namespace BlazorApp.Pages.UnitClasses
     {
         private UnitClassFormContext _formContext = new();
 
+        private int _numericChipNumber;
+
         private List<string> _formulaValues = new();
         private int _formulaCounter;
 
@@ -63,6 +65,8 @@ namespace BlazorApp.Pages.UnitClasses
 
             var unitClass = _formContext.DataItem;
             HttpService.PostAsync<UnitClassDto>("unitclasses", unitClass);
+
+            NavigateBack();
         }
 
         private void NavigateBack()
@@ -86,7 +90,7 @@ namespace BlazorApp.Pages.UnitClasses
 
         public void AddFormula2Value(string value)
         {
-            _formula2Values.Add($"{value} {_formulaCounter++}");
+            _formula2Values.Add($"{value} {_formula2Counter++}");
 
             _formContext.Formula2 = ChipValuesToString(_formula2Values);
         }
@@ -151,7 +155,7 @@ namespace BlazorApp.Pages.UnitClasses
 
             foreach (var value in values)
             {
-                result += Regex.Match(value, @"[а-яА-Я+*=z/><()]*") + " ";
+                result += Regex.Match(value, @"[а-яА-Я+-*=z/><()0-9]*") + " ";
             }
 
             return result;

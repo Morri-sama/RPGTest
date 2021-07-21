@@ -1,4 +1,6 @@
-﻿using Dto;
+﻿using BlazorApp.Dialogs;
+using Dto;
+using MudBlazor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,20 +25,31 @@ namespace BlazorApp.Pages.UnitClasses
             _isDataReady = true;
         }
 
-        public void NavigateToAddUnitClass()
+        public void NavigateToCreateUnitClass()
         {
-
+            NavigationManager.NavigateTo("/unitclasses/create");
         }
 
         private void NavigateToEditUnitClass(string id)
         {
-            //LayoutStateManager.SaveState("companies", _dataGrid.SaveLayout());
-            NavigationManager.NavigateTo($"/companies/edit/{id}");
+            NavigationManager.NavigateTo($"/unitclasses/edit/{id}");
         }
 
         private async Task DeleteUnitClass(UnitClassDto unitClass)
         {
+            var parameters = new DialogParameters();
+            parameters.Add("ContentText", "Вы действительно хотите удалить класс юнита?");
+            parameters.Add("ButtonText", "Удалить");
+            parameters.Add("Color", Color.Error);
 
+            var options = new DialogOptions() { CloseButton = true, MaxWidth = MaxWidth.ExtraSmall };
+
+            var dialog = await DialogService.Show<ConfirmItemDeleteDialogComponent>($"Удаление класса юнита", parameters, options).Result;
+
+            if (!dialog.Cancelled)
+            {
+                await HttpService.DeleteAsync($"unitclasses/{unitClass.Id}");
+            }
         }
     }
 }

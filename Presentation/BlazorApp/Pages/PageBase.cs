@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using BlazorApp.Services;
 using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,5 +24,8 @@ namespace BlazorApp.Pages
 
         [Inject]
         public NavigationManager NavigationManager { get; init; }
+
+        [Inject]
+        public IDialogService DialogService { get; init; }
     }
 }

@@ -27,7 +27,8 @@ namespace BlazorApp
 
             builder.Services.AddAutoMapper(new Type[]
             {
-                typeof(UnitClassProfile)
+                typeof(UnitClassProfile),
+                typeof(UnitProfile)
             });
 
             builder.Services.AddMudServices();

@@ -101,25 +101,40 @@ namespace RPGTest.Core.Services
             return Math.Max(0, damage);
         }
 
-        private void ExecActionAfterCondition(string unitId, double distance)
+        public void ExecActionAfterCondition(string unitId, double distance)
         {
             var unit = _unitRepository.GetById(unitId);
             var unitClass = _unitClassService.GetById(unit.ClassId);
-
-            var trueProperty = unit.GetType().GetProperty(unitClass.TrueConditionActionChangeableProperty);
-            var falseProperty = unit.GetType().GetProperty(unitClass.FalseConditionActionChangeableProperty);
 
             Expression expression = new Expression(SetFormulaVariables(unitClass.Condition, unit, unitClass, distance));
             bool result = Convert.ToBoolean(expression.calculate());
 
             if (result)
             {
+                var postConditionExpression = new Expression(SetFormulaVariables(unitClass.PostTrueConditionAction, unit, unitClass, distance));
+                var fieldNewValue = (int)postConditionExpression.calculate();
 
+                _ = unitClass.TrueConditionActionChangeableProperty switch
+                {
+                    "ТекущееЗдоровье" => unit.HP = fieldNewValue <= unit.MaxHP && fieldNewValue >= 0 ? fieldNewValue : throw new Exception(nameof(fieldNewValue)),
+                    "ТекушаяМана" => unit.Mana = fieldNewValue <= unit.MaxMana && fieldNewValue >=0 ? fieldNewValue : throw new Exception(nameof(fieldNewValue)),
+                    _ => throw new ArgumentOutOfRangeException()
+                };
             }
             else
             {
+                var postConditionExpression = new Expression(SetFormulaVariables(unitClass.PostFalseConditionAction, unit, unitClass, distance));
+                var fieldNewValue = (int)postConditionExpression.calculate();
 
+                _ = unitClass.FalseConditionActionChangeableProperty switch
+                {
+                    "ТекущееЗдоровье" => unit.HP = fieldNewValue <= unit.MaxHP && fieldNewValue >= 0 ? fieldNewValue : throw new Exception(nameof(fieldNewValue)),
+                    "ТекушаяМана" => unit.Mana = fieldNewValue <= unit.MaxMana && fieldNewValue >= 0 ? fieldNewValue : throw new Exception(nameof(fieldNewValue)),
+                    _ => throw new ArgumentOutOfRangeException()
+                };
             }
+
+            Update(unit);
         }
 
         private string SetFormulaVariables(string condition, Unit unit, UnitClass unitClass, double distance)
@@ -133,6 +148,7 @@ namespace RPGTest.Core.Services
             result = Regex.Replace(condition, "РадиусАтаки", ((int)unitClass.AttackType).ToString());
             result = Regex.Replace(condition, "ТекущаяМана", unit.Mana.ToString());
             result = Regex.Replace(condition, "ОкруглитьВБольшуюСторону", "ceil");
+            result = Regex.Replace(condition, "ОкруглитьВБольшуюСторону", "floor");
             return result;
         }
 

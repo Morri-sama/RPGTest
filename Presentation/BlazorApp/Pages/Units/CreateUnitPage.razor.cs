@@ -10,8 +10,7 @@ namespace BlazorApp.Pages.Units
     public partial class CreateUnitPage : PageBase
     {
         private UnitFormContext _formContext = new();
-        private List<UnitClassDto> _unitClasses = new()
-            ;
+        private List<UnitClassDto> _unitClasses = new();
 
         public CreateUnitPage()
         {
@@ -31,6 +30,8 @@ namespace BlazorApp.Pages.Units
             var unit = _formContext.DataItem;
 
             HttpService.PostAsync<UnitDto>("units", unit);
+
+            NavigateBack();
         }
 
         private void NavigateBack()

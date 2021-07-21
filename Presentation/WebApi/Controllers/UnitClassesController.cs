@@ -53,10 +53,19 @@ namespace WebApi.Controllers
             return Ok();
         }
 
-        [HttpDelete("id")]
+        [HttpDelete("{id}")]
         public IActionResult Delete(string id)
         {
-            return Ok();
+            var unitClass = _unitClassService.GetById(id);
+
+            if (unitClass is null)
+            {
+                return NotFound();
+            }
+
+            _unitClassService.Delete(unitClass);
+
+            return NoContent();
         }
     }
 }

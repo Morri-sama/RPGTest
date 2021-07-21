@@ -47,6 +47,8 @@
 
                         <MudButton OnClick="@(e => AddConditionValue("<="))">@("<=") </MudButton>
                         <MudButton OnClick="@(e => AddConditionValue(">="))">>=</MudButton>
+                        <MudButton OnClick="@(e => AddConditionValue(">"))">></MudButton>
+                        <MudButton OnClick="@(e => AddConditionValue("<"))">@("<")</MudButton>
                         <MudButton OnClick="@(e => AddConditionValue("="))">=</MudButton>
                         <MudButton OnClick="@(e => AddConditionValue("+"))">+</MudButton>
                         <MudButton OnClick="@(e => AddConditionValue("-"))">-</MudButton>
@@ -55,6 +57,17 @@
                         <MudButton OnClick="@(e => AddConditionValue("*"))">*</MudButton>
                         <MudButton OnClick="@(e => AddConditionValue("("))">(</MudButton>
                         <MudButton OnClick="@(e => AddConditionValue(")"))">)</MudButton>
+
+                        <br />
+                        <MudButton OnClick="@(e => AddConditionValue(_numericChipNumber.ToString()))">
+                            <MudNumericField T="int"
+                                             @bind-Value="_numericChipNumber" />
+                        </MudButton>
+
+
+                        <br />
+
+
 
                         <MudTextField @bind-Value="_formContext.Condition"
                                       Label="Условие"
@@ -86,7 +99,14 @@
                         <MudButton OnClick="@(e => AddFormulaValue("*"))">*</MudButton>
                         <MudButton OnClick="@(e => AddFormulaValue("("))">(</MudButton>
                         <MudButton OnClick="@(e => AddFormulaValue(")"))">)</MudButton>
-                        <MudButton OnClick="@(e => AddFormulaValue("ОкруглитьВБольшуюСторону"))">)</MudButton>
+                        <MudButton OnClick="@(e => AddFormulaValue("ОкруглитьВБольшуюСторону"))">ОкруглитьВБольшуюСторону</MudButton>
+                        <MudButton OnClick="@(e => AddFormulaValue("ОкруглитьВМеньшуюСторону"))">ОкруглитьВМеньшуюСторону</MudButton>
+
+                        <br />
+                        <MudButton OnClick="@(e => AddFormulaValue(_numericChipNumber.ToString()))">
+                            <MudNumericField T="int"
+                                             @bind-Value="_numericChipNumber" />
+                        </MudButton>
 
                         <MudTextField @bind-Value="_formContext.Formula"
                                       Label="Формула урона"
@@ -118,7 +138,15 @@
                         <MudButton OnClick="@(e => AddFormula2Value("*"))">*</MudButton>
                         <MudButton OnClick="@(e => AddFormula2Value("("))">(</MudButton>
                         <MudButton OnClick="@(e => AddFormula2Value(")"))">)</MudButton>
-                        <MudButton OnClick="@(e => AddFormula2Value("ОкруглитьВБольшуюСторону"))">)</MudButton>
+                        <MudButton OnClick="@(e => AddFormula2Value("ОкруглитьВБольшуюСторону"))">ОкруглитьВБольшуюСторону</MudButton>
+                        <MudButton OnClick="@(e => AddFormula2Value("ОкруглитьВМеньшуюСторону"))">ОкруглитьВМеньшуюСторону</MudButton>
+
+                        <br />
+                        <MudButton OnClick="@(e => AddFormula2Value(_numericChipNumber.ToString()))">
+                            <MudNumericField T="int"
+                                             @bind-Value="_numericChipNumber" />
+                        </MudButton>
+
 
                         <MudTextField @bind-Value="_formContext.Formula2"
                                       Label="Формула урона"
@@ -158,7 +186,15 @@
                         <MudButton OnClick="@(e => AddPostTrueConditionValue("*"))">*</MudButton>
                         <MudButton OnClick="@(e => AddPostTrueConditionValue("("))">(</MudButton>
                         <MudButton OnClick="@(e => AddPostTrueConditionValue(")"))">)</MudButton>
-                        <MudButton OnClick="@(e => AddPostTrueConditionValue("ОкруглитьВБольшуюСторону"))">)</MudButton>
+                        <MudButton OnClick="@(e => AddPostTrueConditionValue("ОкруглитьВБольшуюСторону"))">ОкруглитьВБольшуюСторону</MudButton>
+                        <MudButton OnClick="@(e => AddPostTrueConditionValue("ОкруглитьВМеньшуюСторону"))">ОкруглитьВМеньшуюСторону</MudButton>
+
+                        <br />
+                        <MudButton OnClick="@(e => AddPostTrueConditionValue(_numericChipNumber.ToString()))">
+                            <MudNumericField T="int"
+                                             @bind-Value="_numericChipNumber" />
+                        </MudButton>
+
 
                         <MudTextField @bind-Value="_formContext.PostTrueConditionAction"
                                       Label="Формула урона"
@@ -198,7 +234,15 @@
                         <MudButton OnClick="@(e => AddPostFalseConditionValue("*"))">*</MudButton>
                         <MudButton OnClick="@(e => AddPostFalseConditionValue("("))">(</MudButton>
                         <MudButton OnClick="@(e => AddPostFalseConditionValue(")"))">)</MudButton>
-                        <MudButton OnClick="@(e => AddPostFalseConditionValue("ОкруглитьВБольшуюСторону"))">)</MudButton>
+                        <MudButton OnClick="@(e => AddPostFalseConditionValue("ОкруглитьВБольшуюСторону"))">ОкруглитьВБольшуюСторону</MudButton>
+                        <MudButton OnClick="@(e => AddPostFalseConditionValue("ОкруглитьВМеньшуюСторону"))">ОкруглитьВМеньшуюСторону</MudButton>
+
+                        <br />
+                        <MudButton OnClick="@(e => AddPostFalseConditionValue(_numericChipNumber.ToString()))">
+                            <MudNumericField T="int"
+                                             @bind-Value="_numericChipNumber" />
+                        </MudButton>
+
 
                         <MudTextField @bind-Value="_formContext.PostFalseConditionAction"
                                       Label="Формула урона"

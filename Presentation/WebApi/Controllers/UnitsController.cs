@@ -26,16 +26,20 @@ namespace WebApi.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var classes = _unitService.GetAll();
-            return Ok(classes);
+            var units = _unitService.GetAll();
+
+            var unitDtos = _mapper.Map<List<UnitDto>>(units);
+
+            return Ok(unitDtos);
         }
 
         [HttpGet("{id}")]
         public IActionResult Get(string id)
         {
             var unit = _unitService.GetById(id);
+            var unitDto = _mapper.Map<UnitDto>(unit);
 
-            return Ok(unit);
+            return Ok(unitDto);
         }
 
         [HttpPost]
@@ -44,7 +48,7 @@ namespace WebApi.Controllers
             var unit = _mapper.Map<Unit>(unitDto);
             _unitService.Insert(unit);
 
-            return Ok();
+            return CreatedAtAction("Get", new { id = unit.Id }, unit);
         }
 
         [HttpPut]
@@ -53,13 +57,24 @@ namespace WebApi.Controllers
             var unit = _mapper.Map<Unit>(unitDto);
             _unitService.Update(unit);
 
-            return Ok();
+            unitDto = _mapper.Map<UnitDto>(unit);
+
+            return Ok(unit);
         }
 
-        [HttpDelete("id")]
+        [HttpDelete("{id}")]
         public IActionResult Delete(string id)
         {
-            return Ok();
+            var unit = _unitService.GetById(id);
+
+            if (unit is null)
+            {
+                return NotFound();
+            }
+
+            _unitService.Delete(unit);
+
+            return NoContent();
         }
     }
 }

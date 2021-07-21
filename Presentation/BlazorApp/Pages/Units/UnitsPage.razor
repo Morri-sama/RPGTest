@@ -1,9 +1,67 @@
 ﻿@page "/units"
 @inherits PageBase
 
- @*<MudContainer MaxWidth="MaxWidth.Medium"
-               Class="mt-4">
-     <MudTable>
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
 
-     </MudTable>
- </MudContainer>*@
+    <MudText Typo="Typo.h4" Align="Align.Left" Color="Color.Primary">
+        Юниты
+        <MudMenu Icon="@Icons.Material.Rounded.MoreVert" Size="Size.Small" Direction="Direction.Right">
+            <MudMenuItem OnClick="(e => NavigateToCreateUnit())">Добавить</MudMenuItem>
+        </MudMenu>
+    </MudText>
+    <br />
+
+    <MudTable Items="_units"
+              Loading="!_isDataReady"
+              Hover="true">
+        <HeaderContent>
+            <MudTh></MudTh>
+            <MudTh>ID</MudTh>
+            <MudTh>Класс</MudTh>
+            <MudTh>Здоровье(Максимальное здоровье)</MudTh>
+            <MudTh>Мана(Максимальная мана)</MudTh>
+            <MudTh>Броня / Сопротивление магии</MudTh>
+            <MudTh>X Y</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd>
+                <MudMenu Icon="@Icons.Material.Filled.MoreVert"
+                         Direction="Direction.Left"
+                         Size="Size.Small">
+                    <MudMenuItem OnClick="(x) => { NavigateToEditUnit((context as UnitDto).Id); }">Редактировать</MudMenuItem>
+                    <MudMenuItem OnClick="async(x) => { await DeleteUnit(context as UnitDto); }">Удалить</MudMenuItem>
+                </MudMenu>
+            </MudTd>
+            <MudTd>
+                <MudText Typo="Typo.subtitle1">
+                    @context.Id
+                </MudText>
+            </MudTd>
+            <MudTd>
+                <MudText Typo="Typo.subtitle1">
+                    @_unitClasses?.Where(uc => uc.Id == context.ClassId).FirstOrDefault()?.Name
+                </MudText>
+            </MudTd>
+            <MudTd>
+                <MudText Typo="Typo.subtitle1">
+                    @context.HP (@context.MaxHP)
+                </MudText>
+            </MudTd>
+            <MudTd>
+                <MudText Typo="Typo.subtitle1">
+                    @context.Mana (@context.MaxMana)
+                </MudText>
+            </MudTd>
+            <MudTd>
+                <MudText Typo="Typo.subtitle1">
+                    @context.Armor / @context.MagicResist
+                </MudText>
+            </MudTd>
+            <MudTd>
+                <MudText Typo="Typo.subtitle1">
+                    @context.X @context.Y
+                </MudText>
+            </MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudContainer>

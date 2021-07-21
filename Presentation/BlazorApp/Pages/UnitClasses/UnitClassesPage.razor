@@ -3,10 +3,13 @@
 @inherits PageBase
 
 <MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
-    XDDDDDDD
-    <MudMenu Icon="@Icons.Material.Rounded.Edit" Size="Size.Small" Direction="Direction.Right">
-        <MudMenuItem OnClick="(e => NavigateToAddUnitClass())">Добавить</MudMenuItem>
-    </MudMenu>
+
+    <MudText Typo="Typo.h4" Align="Align.Left" Color="Color.Primary">
+        Классы
+        <MudMenu Icon="@Icons.Material.Rounded.MoreVert" Size="Size.Small" Direction="Direction.Right">
+            <MudMenuItem OnClick="(e => NavigateToCreateUnitClass())">Добавить</MudMenuItem>
+        </MudMenu>
+    </MudText>
     <br />
 
     <MudTable Items="_unitClasses"
