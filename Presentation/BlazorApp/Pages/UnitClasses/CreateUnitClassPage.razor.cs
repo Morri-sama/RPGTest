@@ -155,7 +155,7 @@ namespace BlazorApp.Pages.UnitClasses
 
             foreach (var value in values)
             {
-                result += Regex.Match(value, @"[а-яА-Я+-*=z/><()0-9]*") + " ";
+                result += Regex.Match(value, @"[а-яА-Я+\-*=z/><()0-9]*") + " ";
             }
 
             return result;
