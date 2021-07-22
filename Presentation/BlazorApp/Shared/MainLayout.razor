@@ -2,15 +2,36 @@
 
 <MudThemeProvider />
 <MudDialogProvider />
+<MudSnackbarProvider />
 
 <div class="page">
     <div class="sidebar">
-        <NavMenu />
+        <NavMenu @ref="_navMenu" />
     </div>
 
-    <div class="main">
-        <div class="content px-4">
+    <MudToolBar Class="title">
+        
+    </MudToolBar>
+
+    <div class="main" style="margin-top:12px; padding-bottom: 32px;">
+
+        <CascadingValue Value="this">
             @Body
-        </div>
+        </CascadingValue>
+
     </div>
 </div>
+
+@code{
+    protected override void OnInitialized()
+    {
+      
+    }
+
+    private NavMenu _navMenu;
+
+    public void ToggleMenu()
+    {
+
+    }
+}

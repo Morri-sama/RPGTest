@@ -1,5 +1,4 @@
-﻿
-@page "/unitclasses"
+﻿@page "/unitclasses"
 @inherits PageBase
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge">
@@ -14,54 +13,42 @@
 
     <MudTable Items="_unitClasses"
               Loading="!_isDataReady"
-              Hover="true">
+              Dense="true"
+              Hover="true"
+              Class="w3-table">
         <HeaderContent>
             <MudTh>
 
             </MudTh>
 
             <MudTh>
-                ID
+                <MudText Typo="Typo.body2">
+                    ID
+                </MudText>
             </MudTh>
 
             <MudTh>
-                Название
+                <MudText Typo="Typo.body2">
+                    Название
+                </MudText>
             </MudTh>
 
             <MudTh>
-                Описание
+                <MudText Typo="Typo.body2">
+                    Тип атаки
+                </MudText>
             </MudTh>
 
             <MudTh>
-                Базовый урон
+                <MudText Typo="Typo.body2">
+                    Дистанция атаки
+                </MudText>
             </MudTh>
 
             <MudTh>
-                Условие
-            </MudTh>
-
-            <MudTh>
-                Формула урона, если условия нет, либо оно верно
-            </MudTh>
-
-            <MudTh>
-                Формула урона, если условие ложно
-            </MudTh>
-
-            <MudTh>
-                Изменяемое свойство, если условия нет, либо оно верно
-            </MudTh>
-
-            <MudTh>
-                Формула изменяемого свойства, если условия нет, либо оно верно
-            </MudTh>
-
-            <MudTh>
-                Изменяемое свойство, если условие ложно
-            </MudTh>
-
-            <MudTh>
-                Формула изменяемого свойства, если условие ложно
+                <MudText Typo="Typo.body2">
+                    Базовый урон
+                </MudText>
             </MudTh>
         </HeaderContent>
         <RowTemplate>
@@ -75,68 +62,32 @@
             </MudTd>
 
             <MudTd>
-                <MudText>
+                <MudText Typo="Typo.body2">
                     @context.Id
                 </MudText>
             </MudTd>
 
             <MudTd>
-                <MudText>
+                <MudText Typo="Typo.body2">
                     @context.Name
                 </MudText>
             </MudTd>
 
             <MudTd>
-                <MudText>
-                    @context.Description
+                <MudText Typo="Typo.body2">
+                    @context.AttackType
                 </MudText>
             </MudTd>
 
             <MudTd>
-                <MudText>
+                <MudText Typo="Typo.body2">
+                    @context.DamageType
+                </MudText>
+            </MudTd>
+
+            <MudTd>
+                <MudText Typo="Typo.body2">
                     @context.BaseDamage
-                </MudText>
-            </MudTd>
-
-            <MudTd>
-                <MudText>
-                    @context.Condition
-                </MudText>
-            </MudTd>
-
-            <MudTd>
-                <MudText>
-                    @context.Formula
-                </MudText>
-            </MudTd>
-
-            <MudTd>
-                <MudText>
-                    @context.Formula2
-                </MudText>
-            </MudTd>
-
-            <MudTd>
-                <MudText>
-                    @context.TrueConditionActionChangeableProperty
-                </MudText>
-            </MudTd>
-
-            <MudTd>
-                <MudText>
-                    @context.PostTrueConditionAction
-                </MudText>
-            </MudTd>
-
-            <MudTd>
-                <MudText>
-                    @context.FalseConditionActionChangeableProperty
-                </MudText>
-            </MudTd>
-
-            <MudTd>
-                <MudText>
-                    @context.PostFalseConditionAction
                 </MudText>
             </MudTd>
         </RowTemplate>
