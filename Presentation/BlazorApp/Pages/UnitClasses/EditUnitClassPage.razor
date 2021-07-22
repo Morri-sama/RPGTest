@@ -1,0 +1,271 @@
+﻿@page "/unitclasses/edit/{Id}"
+@inherits PageBase
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+    <MudText Typo="Typo.h4" Align="Align.Left" Color="Color.Primary">Новый класс юнита</MudText>
+    <br />
+    <EditForm Model="_formContext" OnValidSubmit="PutToApi">
+        <MudTabs Position="Position.Left">
+            <MudTabPanel Text="Основное">
+                <MudCard Style="margin-left: 24px; min-width: 350px;">
+                    <MudCardContent>
+                        <MudTextField Label="Название"
+                                      @bind-Value="_formContext.Name" />
+                        <MudTextField Label="Описание"
+                                      @bind-Value="_formContext.Description" />
+                        <MudSelect T="int" Label="Тип атаки">
+                            <MudSelectItem T="int" Value="(int)(AttackType.Melee)">
+                                Ближняя
+                            </MudSelectItem>
+                            <MudSelectItem T="int" Value="(int)(AttackType.Range)">
+                                Дальняя
+                            </MudSelectItem>
+                            <MudSelectItem T="int" Value="(int)(AttackType.Magical)">
+                                Магическая
+                            </MudSelectItem>
+                        </MudSelect>
+                        <MudSelect T="int" Label="Тип урона">
+                            <MudSelectItem T="int" Value="(int)(DamageType.Physical)">
+                                Физический
+                            </MudSelectItem>
+                            <MudSelectItem T="int" Value="(int)(DamageType.Magical)">
+                                Магический
+                            </MudSelectItem>
+                        </MudSelect>
+                        <MudTextField Label="Базовый урон"
+                                      @bind-Value="_formContext.BaseDamage" />
+                    </MudCardContent>
+                </MudCard>
+            </MudTabPanel>
+            <MudTabPanel Text="Условие">
+                <MudCard Style="margin-left: 24px; min-width: 350px;">
+                    <MudCardContent>
+                        @foreach (var unitField in _unitFields)
+                        {
+                            <MudButton OnClick="e => AddConditionValue(unitField)">@unitField</MudButton>
+                        }
+
+                        <MudButton OnClick="@(e => AddConditionValue("<="))">@("<=") </MudButton>
+                        <MudButton OnClick="@(e => AddConditionValue(">="))">>=</MudButton>
+                        <MudButton OnClick="@(e => AddConditionValue(">"))">></MudButton>
+                        <MudButton OnClick="@(e => AddConditionValue("<"))">@("<")</MudButton>
+                        <MudButton OnClick="@(e => AddConditionValue("="))">=</MudButton>
+                        <MudButton OnClick="@(e => AddConditionValue("+"))">+</MudButton>
+                        <MudButton OnClick="@(e => AddConditionValue("-"))">-</MudButton>
+
+                        <MudButton OnClick="@(e => AddConditionValue("/"))">/</MudButton>
+                        <MudButton OnClick="@(e => AddConditionValue("*"))">*</MudButton>
+                        <MudButton OnClick="@(e => AddConditionValue("("))">(</MudButton>
+                        <MudButton OnClick="@(e => AddConditionValue(")"))">)</MudButton>
+
+                        <br />
+                        <MudButton OnClick="@(e => AddConditionValue(_numericChipNumber.ToString()))">
+                            <MudNumericField T="int"
+                                             @bind-Value="_numericChipNumber" />
+                        </MudButton>
+
+
+                        <br />
+
+
+
+                        <MudTextField @bind-Value="_formContext.Condition"
+                                      Label="Условие"
+                                      Variant="Variant.Outlined"
+                                      Lines="5"
+                                      ReadOnly="true" />
+
+                        <MudChipSet AllClosable="true"
+                                    OnClose="OnConditionChipClose">
+                            @foreach (var value in _conditionValues)
+                            {
+                                <MudChip Text="@value"></MudChip>
+                            }
+                        </MudChipSet>
+                    </MudCardContent>
+                </MudCard>
+            </MudTabPanel>
+            <MudTabPanel Text="Формула">
+                <MudCard Style="margin-left: 24px; min-width: 350px;">
+                    <MudCardContent>
+                        @foreach (var unitField in _unitFields)
+                        {
+                            <MudButton OnClick="e => AddFormulaValue(unitField)">@unitField</MudButton>
+                        }
+
+                        <MudButton OnClick="@(e => AddFormulaValue("+"))">+</MudButton>
+                        <MudButton OnClick="@(e => AddFormulaValue("-"))">-</MudButton>
+                        <MudButton OnClick="@(e => AddFormulaValue("/"))">/</MudButton>
+                        <MudButton OnClick="@(e => AddFormulaValue("*"))">*</MudButton>
+                        <MudButton OnClick="@(e => AddFormulaValue("("))">(</MudButton>
+                        <MudButton OnClick="@(e => AddFormulaValue(")"))">)</MudButton>
+                        <MudButton OnClick="@(e => AddFormulaValue("ОкруглитьВБольшуюСторону"))">ОкруглитьВБольшуюСторону</MudButton>
+                        <MudButton OnClick="@(e => AddFormulaValue("ОкруглитьВМеньшуюСторону"))">ОкруглитьВМеньшуюСторону</MudButton>
+
+                        <br />
+                        <MudButton OnClick="@(e => AddFormulaValue(_numericChipNumber.ToString()))">
+                            <MudNumericField T="int"
+                                             @bind-Value="_numericChipNumber" />
+                        </MudButton>
+
+                        <MudTextField @bind-Value="_formContext.Formula"
+                                      Label="Формула урона"
+                                      Variant="Variant.Outlined"
+                                      Lines="5"
+                                      ReadOnly="true" />
+
+                        <MudChipSet AllClosable="true"
+                                    OnClose="OnFormulaChipClose">
+                            @foreach (var value in _formulaValues)
+                            {
+                                <MudChip Text="@value"></MudChip>
+                            }
+                        </MudChipSet>
+                    </MudCardContent>
+                </MudCard>
+            </MudTabPanel>
+            <MudTabPanel Text="Формула, если условие не выполняется">
+                <MudCard Style="margin-left: 24px; min-width: 350px;">
+                    <MudCardContent>
+                        @foreach (var unitField in _unitFields)
+                        {
+                            <MudButton OnClick="e => AddFormula2Value(unitField)">@unitField</MudButton>
+                        }
+
+                        <MudButton OnClick="@(e => AddFormula2Value("+"))">+</MudButton>
+                        <MudButton OnClick="@(e => AddFormula2Value("-"))">-</MudButton>
+                        <MudButton OnClick="@(e => AddFormula2Value("/"))">/</MudButton>
+                        <MudButton OnClick="@(e => AddFormula2Value("*"))">*</MudButton>
+                        <MudButton OnClick="@(e => AddFormula2Value("("))">(</MudButton>
+                        <MudButton OnClick="@(e => AddFormula2Value(")"))">)</MudButton>
+                        <MudButton OnClick="@(e => AddFormula2Value("ОкруглитьВБольшуюСторону"))">ОкруглитьВБольшуюСторону</MudButton>
+                        <MudButton OnClick="@(e => AddFormula2Value("ОкруглитьВМеньшуюСторону"))">ОкруглитьВМеньшуюСторону</MudButton>
+
+                        <br />
+                        <MudButton OnClick="@(e => AddFormula2Value(_numericChipNumber.ToString()))">
+                            <MudNumericField T="int"
+                                             @bind-Value="_numericChipNumber" />
+                        </MudButton>
+
+
+                        <MudTextField @bind-Value="_formContext.Formula2"
+                                      Label="Формула урона"
+                                      Variant="Variant.Outlined"
+                                      Lines="5"
+                                      ReadOnly="true" />
+
+                        <MudChipSet AllClosable="true"
+                                    OnClose="OnFormula2ChipClose">
+                            @foreach (var value in _formula2Values)
+                            {
+                                <MudChip Text="@value"></MudChip>
+                            }
+                        </MudChipSet>
+                    </MudCardContent>
+                </MudCard>
+            </MudTabPanel>
+            <MudTabPanel Text="Действие после атаки, если условие выполняется">
+                <MudCard Style="margin-left: 24px; min-width: 350px;">
+                    <MudCardContent>
+                        <MudSelect T="string"
+                                   Label="Изменяемое поле">
+                            @foreach (var value in _changeableFields)
+                            {
+                                <MudSelectItem Value="@value" />
+                            }
+                        </MudSelect>
+
+                        @foreach (var unitField in _unitFields)
+                        {
+                            <MudButton OnClick="e => AddPostTrueConditionValue(unitField)">@unitField</MudButton>
+                        }
+
+                        <MudButton OnClick="@(e => AddPostTrueConditionValue("+"))">+</MudButton>
+                        <MudButton OnClick="@(e => AddPostTrueConditionValue("-"))">-</MudButton>
+                        <MudButton OnClick="@(e => AddPostTrueConditionValue("/"))">/</MudButton>
+                        <MudButton OnClick="@(e => AddPostTrueConditionValue("*"))">*</MudButton>
+                        <MudButton OnClick="@(e => AddPostTrueConditionValue("("))">(</MudButton>
+                        <MudButton OnClick="@(e => AddPostTrueConditionValue(")"))">)</MudButton>
+                        <MudButton OnClick="@(e => AddPostTrueConditionValue("ОкруглитьВБольшуюСторону"))">ОкруглитьВБольшуюСторону</MudButton>
+                        <MudButton OnClick="@(e => AddPostTrueConditionValue("ОкруглитьВМеньшуюСторону"))">ОкруглитьВМеньшуюСторону</MudButton>
+
+                        <br />
+                        <MudButton OnClick="@(e => AddPostTrueConditionValue(_numericChipNumber.ToString()))">
+                            <MudNumericField T="int"
+                                             @bind-Value="_numericChipNumber" />
+                        </MudButton>
+
+
+                        <MudTextField @bind-Value="_formContext.PostTrueConditionAction"
+                                      Label="Формула урона"
+                                      Variant="Variant.Outlined"
+                                      Lines="5"
+                                      ReadOnly="true" />
+
+                        <MudChipSet AllClosable="true"
+                                    OnClose="OnFormula2ChipClose">
+                            @foreach (var value in _postTrueConditionValues)
+                            {
+                                <MudChip Text="@value"></MudChip>
+                            }
+                        </MudChipSet>
+                    </MudCardContent>
+                </MudCard>
+            </MudTabPanel>
+            <MudTabPanel Text="Действие после атаки, если условие не выполняется">
+                <MudCard Style="margin-left: 24px; min-width: 350px;">
+                    <MudCardContent>
+                        <MudSelect T="string"
+                                   Label="Изменяемое поле">
+                            @foreach (var value in _changeableFields)
+                            {
+                                <MudSelectItem Value="@value" />
+                            }
+                        </MudSelect>
+
+                        @foreach (var unitField in _unitFields)
+                        {
+                            <MudButton OnClick="e => AddPostFalseConditionValue(unitField)">@unitField</MudButton>
+                        }
+
+                        <MudButton OnClick="@(e => AddPostFalseConditionValue("+"))">+</MudButton>
+                        <MudButton OnClick="@(e => AddPostFalseConditionValue("-"))">-</MudButton>
+                        <MudButton OnClick="@(e => AddPostFalseConditionValue("/"))">/</MudButton>
+                        <MudButton OnClick="@(e => AddPostFalseConditionValue("*"))">*</MudButton>
+                        <MudButton OnClick="@(e => AddPostFalseConditionValue("("))">(</MudButton>
+                        <MudButton OnClick="@(e => AddPostFalseConditionValue(")"))">)</MudButton>
+                        <MudButton OnClick="@(e => AddPostFalseConditionValue("ОкруглитьВБольшуюСторону"))">ОкруглитьВБольшуюСторону</MudButton>
+                        <MudButton OnClick="@(e => AddPostFalseConditionValue("ОкруглитьВМеньшуюСторону"))">ОкруглитьВМеньшуюСторону</MudButton>
+
+                        <br />
+                        <MudButton OnClick="@(e => AddPostFalseConditionValue(_numericChipNumber.ToString()))">
+                            <MudNumericField T="int"
+                                             @bind-Value="_numericChipNumber" />
+                        </MudButton>
+
+
+                        <MudTextField @bind-Value="_formContext.PostFalseConditionAction"
+                                      Label="Формула урона"
+                                      Variant="Variant.Outlined"
+                                      Lines="5"
+                                      ReadOnly="true" />
+
+                        <MudChipSet AllClosable="true"
+                                    OnClose="OnFormula2ChipClose">
+                            @foreach (var value in _postFalseConditionValues)
+                            {
+                                <MudChip Text="@value"></MudChip>
+                            }
+                        </MudChipSet>
+                    </MudCardContent>
+                </MudCard>
+            </MudTabPanel>
+        </MudTabs>
+        <div class="d-flex" style="margin-top: 24px;">
+            <MudButton Variant="Variant.Text" Class="" OnClick="(e => NavigateBack())">Отмена</MudButton>
+            <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="">Добавить</MudButton>
+        </div>
+
+    </EditForm>
+
+</MudContainer>

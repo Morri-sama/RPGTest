@@ -1,16 +1,16 @@
 ﻿using BlazorApp.FormEditors;
 using Dto;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using static Dto.EnumsDto;
 
 namespace BlazorApp.Pages.UnitClasses
 {
-    public partial class CreateUnitClassPage : PageBase
+    public partial class EditUnitClassPage : PageBase
     {
         private UnitClassFormContext _formContext = new();
 
@@ -48,30 +48,69 @@ namespace BlazorApp.Pages.UnitClasses
             "ТекущееЗдоровье"
         };
 
-        public CreateUnitClassPage()
+        public EditUnitClassPage()
         {
 
         }
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
-            base.OnInitialized();
+            var unitClass = await HttpService.GetAsync<UnitClassDto>($"unitclasses/{Id}");
+
             _formContext.Mapper = Mapper;
+            _formContext.DataItem = unitClass;
+            _formContext.Init();
+
+            if (!string.IsNullOrEmpty(_formContext.Condition))
+            {
+                AddChipsFromExpressionString(_formContext.Condition, _conditionValues, ref _conditionCounter);
+            }
+
+            if (!string.IsNullOrEmpty(_formContext.Formula))
+            {
+                AddChipsFromExpressionString(_formContext.Formula, _formulaValues, ref _formulaCounter);
+            }
+
+            if (!string.IsNullOrEmpty(_formContext.Formula2))
+            {
+                AddChipsFromExpressionString(_formContext.Formula2, _formula2Values, ref _formula2Counter);
+            }
+
+            if (!string.IsNullOrEmpty(_formContext.PostTrueConditionAction))
+            {
+                AddChipsFromExpressionString(_formContext.PostTrueConditionAction, _postTrueConditionValues, ref _postTrueConditionCounter);
+            }
+
+            if (!string.IsNullOrEmpty(_formContext.PostFalseConditionAction))
+            {
+                AddChipsFromExpressionString(_formContext.PostFalseConditionAction, _postFalseConditionValues, ref _postFalseConditionCounter);
+            }
         }
 
-        public void PostToApi()
+
+        public void PutToApi()
         {
             _formContext.PrepareDataItem();
 
             var unitClass = _formContext.DataItem;
-            HttpService.PostAsync<UnitClassDto>("unitclasses", unitClass);
+            HttpService.PutAsync<UnitClassDto>("unitclasses", unitClass);
 
             NavigateBack();
         }
 
-        private void NavigateBack()
+        public void NavigateBack()
         {
             NavigationManager.NavigateTo("/unitclasses");
+        }
+
+        public void AddChipsFromExpressionString(string expression, List<string> values, ref int counter)
+        {
+            string[] splittedExpression = Regex.Split(expression, @"\s+");
+
+            foreach (var value in splittedExpression)
+            {
+                values.Add($"{value} {counter++}");
+            }
         }
 
         public void AddFormulaValue(string value)
@@ -160,5 +199,8 @@ namespace BlazorApp.Pages.UnitClasses
 
             return result.Trim();
         }
+
+        [Parameter]
+        public string Id { get; set; }
     }
 }
