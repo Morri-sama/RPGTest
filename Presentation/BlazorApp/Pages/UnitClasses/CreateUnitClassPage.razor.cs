@@ -1,4 +1,5 @@
-﻿using BlazorApp.FormEditors;
+﻿using BlazorApp.Dialogs;
+using BlazorApp.FormEditors;
 using Dto;
 using MudBlazor;
 using System;
@@ -13,40 +14,6 @@ namespace BlazorApp.Pages.UnitClasses
     public partial class CreateUnitClassPage : PageBase
     {
         private UnitClassFormContext _formContext = new();
-
-        private int _numericChipNumber;
-
-        private List<string> _formulaValues = new();
-        private int _formulaCounter;
-
-        private List<string> _formula2Values = new();
-        private int _formula2Counter;
-
-        private List<string> _conditionValues = new();
-        private int _conditionCounter;
-
-        private List<string> _postTrueConditionValues = new();
-        private int _postTrueConditionCounter;
-
-        private List<string> _postFalseConditionValues = new();
-        private int _postFalseConditionCounter;
-
-        private List<string> _unitFields = new()
-        {
-            "БазовыйУрон",
-            "НедостающееЗдоровье",
-            "МаксимальноеЗдоровье",
-            "ДистанцияДоЦели",
-            "РадиусАтаки",
-            "ТекущаяМана",
-            "ТекущееЗдоровье"
-        };
-
-        private List<string> _changeableFields = new()
-        {
-            "ТекущаяМана",
-            "ТекущееЗдоровье"
-        };
 
         public CreateUnitClassPage()
         {
@@ -74,91 +41,95 @@ namespace BlazorApp.Pages.UnitClasses
             NavigationManager.NavigateTo("/unitclasses");
         }
 
-        public void AddFormulaValue(string value)
+        private async Task EditFormula()
         {
-            _formulaValues.Add($"{value} {_formulaCounter++}");
+            string result = await EditExpression(expression: _formContext.Formula,
+                                                 title: "Редактирование выражения, когда условия нет, либо оно верно.",
+                                                 useFields: true,
+                                                 useBrackets: true,
+                                                 useMathOperators: true,
+                                                 useLogicalOperators: false);
 
-            _formContext.Formula = ChipValuesToString(_formulaValues);
+            _formContext.Formula ??= result;
         }
 
-        public void OnFormulaChipClose(MudChip mudChip)
+        private async Task EditFormula2()
         {
-            _formulaValues.Remove(mudChip.Text);
+            string result = await EditExpression(expression: _formContext.Formula2,
+                                                 title: "Редактирование выражения, когда условие ложно.",
+                                                 useFields: true,
+                                                 useBrackets: true,
+                                                 useMathOperators: true,
+                                                 useLogicalOperators: false);
 
-            _formContext.Formula = ChipValuesToString(_formulaValues);
+            _formContext.Formula2 ??= result;
         }
 
-        public void AddFormula2Value(string value)
+        private async Task EditCondition()
         {
-            _formula2Values.Add($"{value} {_formula2Counter++}");
+            string result = await EditExpression(expression: _formContext.Condition,
+                                                 title: "Редактирование условия",
+                                                 useFields: true,
+                                                 useBrackets: true,
+                                                 useMathOperators: true,
+                                                 useLogicalOperators: true);
 
-            _formContext.Formula2 = ChipValuesToString(_formula2Values);
+            _formContext.Condition ??= result;
         }
 
-        public void OnFormula2ChipClose(MudChip mudChip)
+        private async Task EditPostTrueCondition()
         {
-            _formula2Values.Remove(mudChip.Text);
+            string result = await EditExpression(expression: _formContext.PostTrueConditionAction,
+                                                 title: "Редактирование выражения для изменения свойства юнита после атаки, когда условия нет, либо оно верно",
+                                                 useFields: true,
+                                                 useBrackets: true,
+                                                 useMathOperators: true,
+                                                 useLogicalOperators: false);
 
-            _formContext.Formula2 = ChipValuesToString(_formula2Values);
+            _formContext.PostTrueConditionAction ??= result;
         }
 
-        public void AddConditionValue(string value)
+        private async Task EditPostFalseCondition()
         {
-            _conditionValues.Add($"{value} {_conditionCounter++}");
+            string result = await EditExpression(expression: _formContext.PostFalseConditionAction,
+                                                 title: "Редактирование выражения для изменения свойства юнита после атаки, когда условие ложно",
+                                                 useFields: true,
+                                                 useBrackets: true,
+                                                 useMathOperators: true,
+                                                 useLogicalOperators: false);
 
-            _formContext.Condition = ChipValuesToString(_conditionValues);
+            _formContext.PostFalseConditionAction ??= result;
         }
 
-        public void OnConditionChipClose(MudChip mudChip)
+        private async Task<string> EditExpression(string expression,
+                                                  string title = "Редактирование выражения",
+                                                  bool useFields = false,
+                                                  bool useBrackets = false,
+                                                  bool useMathOperators = false,
+                                                  bool useLogicalOperators = false)
         {
-            _conditionValues.Remove(mudChip.Text);
+            string expressionNewValue = null;
 
-            _formContext.Condition = ChipValuesToString(_conditionValues);
-        }
-
-        public void AddPostTrueConditionValue(string value)
-        {
-            _postTrueConditionValues.Add($"{value} {_postTrueConditionCounter++}");
-
-            _formContext.PostTrueConditionAction = ChipValuesToString(_postTrueConditionValues);
-        }
-
-        public void OnTrueConditionChipClose(MudChip mudChip)
-        {
-            _postTrueConditionValues.Remove(mudChip.Text);
-
-            _formContext.PostTrueConditionAction = ChipValuesToString(_postTrueConditionValues);
-        }
-
-        public void AddPostFalseConditionValue(string value)
-        {
-            _postFalseConditionValues.Add($"{value} {_postFalseConditionCounter++}");
-
-            _formContext.PostFalseConditionAction = ChipValuesToString(_postFalseConditionValues);
-        }
-
-        public void OnFalseConditionChipClose(MudChip mudChip)
-        {
-            _postFalseConditionValues.Remove(mudChip.Text);
-
-            _formContext.PostFalseConditionAction = ChipValuesToString(_postFalseConditionValues);
-        }
-
-        public string ChipValuesToString(List<string> values)
-        {
-            if (values is null)
+            var parameters = new DialogParameters
             {
-                throw new ArgumentNullException(nameof(values));
+                ["Expression"] = expression,
+                ["Title"] = title,
+                ["UseFields"] = useFields,
+                ["UseBrackets"] = useBrackets,
+                ["UseMathOperators"] = useMathOperators,
+                ["UseLogicalOperators"] = useLogicalOperators
+            };
+
+            var dialog = DialogService.Show<FormulaEditDialog>(title, parameters);
+
+            var result = await dialog.Result;
+
+            if (!result.Cancelled)
+            {
+                expressionNewValue = result.Data.ToString();
             }
 
-            string result = string.Empty;
-
-            foreach (var value in values)
-            {
-                result += Regex.Match(value, @"[а-яА-Я+\-*=z/><()0-9]*") + " ";
-            }
-
-            return result.Trim();
+            return expressionNewValue;
         }
     }
 }

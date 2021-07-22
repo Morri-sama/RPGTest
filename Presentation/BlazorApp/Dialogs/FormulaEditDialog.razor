@@ -7,7 +7,7 @@
     </TitleContent>
     <DialogContent>
         <MudTextField @bind-Value="Expression"
-                      Label="Формула"
+                      Label="Выражение"
                       Variant="Variant.Outlined"
                       Lines="8"
                       ReadOnly="true" />
@@ -34,7 +34,7 @@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancel">Отмена</MudButton>
-        <MudButton Color="Color.Success"
+        <MudButton Color="Color.Primary"
                    OnClick="Save">Сохранить</MudButton>
     </DialogActions>
 </MudDialog>

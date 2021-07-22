@@ -2,7 +2,7 @@
 @page "/unitclasses"
 @inherits PageBase
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="mt-4">
+<MudContainer MaxWidth="MaxWidth.ExtraLarge">
 
     <MudText Typo="Typo.h4" Align="Align.Left" Color="Color.Primary">
         Классы
@@ -16,27 +16,52 @@
               Loading="!_isDataReady"
               Hover="true">
         <HeaderContent>
-            <MudTh></MudTh>
+            <MudTh>
+
+            </MudTh>
+
             <MudTh>
                 ID
             </MudTh>
+
             <MudTh>
                 Название
             </MudTh>
+
             <MudTh>
                 Описание
             </MudTh>
+
             <MudTh>
                 Базовый урон
             </MudTh>
-            <MudTh>
-                Формула
-            </MudTh>
-            <MudTh>
-                Формула, если условие не выполняется
-            </MudTh>
+
             <MudTh>
                 Условие
+            </MudTh>
+
+            <MudTh>
+                Формула урона, если условия нет, либо оно верно
+            </MudTh>
+
+            <MudTh>
+                Формула урона, если условие ложно
+            </MudTh>
+
+            <MudTh>
+                Изменяемое свойство, если условия нет, либо оно верно
+            </MudTh>
+
+            <MudTh>
+                Формула изменяемого свойства, если условия нет, либо оно верно
+            </MudTh>
+
+            <MudTh>
+                Изменяемое свойство, если условие ложно
+            </MudTh>
+
+            <MudTh>
+                Формула изменяемого свойства, если условие ложно
             </MudTh>
         </HeaderContent>
         <RowTemplate>
@@ -48,39 +73,70 @@
                     <MudMenuItem OnClick="async(x) => { await DeleteUnitClass(context as UnitClassDto); }">Удалить</MudMenuItem>
                 </MudMenu>
             </MudTd>
+
             <MudTd>
                 <MudText>
                     @context.Id
                 </MudText>
             </MudTd>
+
             <MudTd>
                 <MudText>
                     @context.Name
                 </MudText>
             </MudTd>
+
             <MudTd>
                 <MudText>
                     @context.Description
                 </MudText>
             </MudTd>
+
             <MudTd>
                 <MudText>
                     @context.BaseDamage
                 </MudText>
             </MudTd>
+
+            <MudTd>
+                <MudText>
+                    @context.Condition
+                </MudText>
+            </MudTd>
+
             <MudTd>
                 <MudText>
                     @context.Formula
                 </MudText>
             </MudTd>
+
             <MudTd>
                 <MudText>
                     @context.Formula2
                 </MudText>
             </MudTd>
+
             <MudTd>
                 <MudText>
-                    @context.Condition
+                    @context.TrueConditionActionChangeableProperty
+                </MudText>
+            </MudTd>
+
+            <MudTd>
+                <MudText>
+                    @context.PostTrueConditionAction
+                </MudText>
+            </MudTd>
+
+            <MudTd>
+                <MudText>
+                    @context.FalseConditionActionChangeableProperty
+                </MudText>
+            </MudTd>
+
+            <MudTd>
+                <MudText>
+                    @context.PostFalseConditionAction
                 </MudText>
             </MudTd>
         </RowTemplate>

@@ -73,15 +73,17 @@ namespace BlazorApp.Dialogs
                 _operationsList.AddRange(_brackets);
             }
 
-            if (UseMathOperations)
+            if (UseMathOperators)
             {
                 _operationsList.AddRange(_mathOperations);
             }
 
-            if (UseLogicalOperations)
+            if (UseLogicalOperators)
             {
                 _operationsList.AddRange(_logicalOperations);
             }
+
+            Expression ??= string.Empty;
 
             AddChipsFromExpressionString();
         }
@@ -116,7 +118,14 @@ namespace BlazorApp.Dialogs
 
             foreach (var value in splittedExpression)
             {
-                _values.Add($"{value} {_chipCounter++}");
+                if (value == string.Empty)
+                {
+
+                }
+                else
+                {
+                    _values.Add($"{value} {_chipCounter++}");
+                }
             }
         }
 
@@ -145,10 +154,10 @@ namespace BlazorApp.Dialogs
         public bool UseBrackets { get; set; } = false;
 
         [Parameter]
-        public bool UseMathOperations { get; set; } = false;
+        public bool UseMathOperators { get; set; } = false;
 
         [Parameter]
-        public bool UseLogicalOperations { get; set; } = false;
+        public bool UseLogicalOperators { get; set; } = false;
 
         [CascadingParameter]
         MudDialogInstance MudDialog { get; set; }
