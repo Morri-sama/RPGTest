@@ -13,25 +13,76 @@ namespace BlazorApp.Dialogs
         private List<string> _values = new();
         private int _chipCounter;
         private int _numericChipValue;
-
-        private List<string> _unitFields = new()
-        {
-            "БазовыйУрон",
-            "НедостающееЗдоровье",
-            "МаксимальноеЗдоровье",
-            "ДистанцияДоЦели",
-            "РадиусАтаки",
-            "ТекущаяМана",
-            "ТекущееЗдоровье"
-        };
+        private readonly List<string> _fields;
+        private readonly List<string> _brackets;
+        private readonly List<string> _mathOperations;
+        private readonly List<string> _logicalOperations;
+        private readonly List<string> _operationsList = new();
 
         public FormulaEditDialog()
         {
+            _fields = new()
+            {
+                "БазовыйУрон",
+                "НедостающееЗдоровье",
+                "МаксимальноеЗдоровье",
+                "ДистанцияДоЦели",
+                "РадиусАтаки",
+                "ТекущаяМана",
+                "ТекущееЗдоровье"
+            };
 
+            _brackets = new()
+            {
+                "(",
+                ")"
+            };
+
+            _mathOperations = new()
+            {
+                "+",
+                "-",
+                "/",
+                "*",
+                "(",
+                ")",
+                "ОкруглитьВБольшуюСторону",
+                "ОкруглитьВМеньшуюСторону"
+            };
+
+            _logicalOperations = new()
+            {
+                "=",
+                "!=",
+                ">=",
+                "<=",
+                ">",
+                "<"
+            };
         }
 
         protected override void OnInitialized()
         {
+            if (UseFields)
+            {
+                _operationsList.AddRange(_fields);
+            }
+
+            if (UseBrackets)
+            {
+                _operationsList.AddRange(_brackets);
+            }
+
+            if (UseMathOperations)
+            {
+                _operationsList.AddRange(_mathOperations);
+            }
+
+            if (UseLogicalOperations)
+            {
+                _operationsList.AddRange(_logicalOperations);
+            }
+
             AddChipsFromExpressionString();
         }
 
@@ -42,26 +93,26 @@ namespace BlazorApp.Dialogs
 
         private void Save()
         {
-            MudDialog.Close(DialogResult.Ok<string>(Formula));
+            MudDialog.Close(DialogResult.Ok<string>(Expression));
         }
 
-        public void AddFormulaValue(string value)
+        public void AddValue(string value)
         {
             _values.Add($"{value} {_chipCounter++}");
 
-            Formula = ChipValuesToString();
+            Expression = ChipValuesToString();
         }
 
-        public void OnFormulaChipClose(MudChip mudChip)
+        public void OnChipClose(MudChip mudChip)
         {
             _values.Remove(mudChip.Text);
 
-            Formula = ChipValuesToString();
+            Expression = ChipValuesToString();
         }
 
         private void AddChipsFromExpressionString()
         {
-            string[] splittedExpression = Regex.Split(Formula, @"\s+");
+            string[] splittedExpression = Regex.Split(Expression, @"\s+");
 
             foreach (var value in splittedExpression)
             {
@@ -85,7 +136,19 @@ namespace BlazorApp.Dialogs
         public string Title { get; set; } = "Редактирование";
 
         [Parameter]
-        public string Formula { get; set; }
+        public string Expression { get; set; }
+
+        [Parameter]
+        public bool UseFields { get; set; } = false;
+
+        [Parameter]
+        public bool UseBrackets { get; set; } = false;
+
+        [Parameter]
+        public bool UseMathOperations { get; set; } = false;
+
+        [Parameter]
+        public bool UseLogicalOperations { get; set; } = false;
 
         [CascadingParameter]
         MudDialogInstance MudDialog { get; set; }
