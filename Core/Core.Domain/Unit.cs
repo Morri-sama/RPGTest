@@ -7,6 +7,7 @@ namespace RPGTest.Core.Domain
 {
     public class Unit : EntityBase
     {
+        public string Name { get; set; }
         public int HP { get; set; }
         public int MaxHP { get; set; }
         public int Mana { get; set; }

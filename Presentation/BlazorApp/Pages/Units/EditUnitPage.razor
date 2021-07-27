@@ -1,4 +1,4 @@
-﻿@page "/units/create"
+﻿@page "/units/edit/{Id}"
 @inherits PageBase
 
 <MudContainer MaxWidth="MaxWidth.Large" Style="margin-bottom: 36px">
@@ -6,7 +6,7 @@
     <br />
 
     <EditForm Model="_formContext"
-              OnValidSubmit="PostToApi">
+              OnValidSubmit="PutToApi">
         <DataAnnotationsValidator />
 
         <MudCard>
@@ -18,8 +18,8 @@
                                    @bind-Value="_formContext.ClassId">
                             @foreach (var unitClass in _unitClasses)
                             {
-                                <MudSelectItem T="string"
-                                               Value="unitClass.Id">
+                                <MudSelectItem Value="unitClass.Id"
+                                               T="string">
                                     @unitClass.Name
                                 </MudSelectItem>
                             }
@@ -27,7 +27,7 @@
                     </MudItem>
                     <MudItem xs="12">
                         <MudTextField @bind-Value="_formContext.Name"
-                                      Label="Имя"/>
+                                      Label="Имя" />
                     </MudItem>
                     <MudItem xs="12">
                         <MudNumericField @bind-Value="_formContext.HP"
@@ -72,7 +72,7 @@
                 </MudGrid>
             </MudCardContent>
             <MudCardActions Class="d-flex flex-row-reverse">
-                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="">Добавить</MudButton>
+                <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" Color="Color.Primary" Class="">Сохранить</MudButton>
                 <MudButton Variant="Variant.Text" Class="" OnClick="(e => NavigateBack())">Отмена</MudButton>
             </MudCardActions>
         </MudCard>

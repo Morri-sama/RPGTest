@@ -2,8 +2,8 @@
     display: grid;
     background-color: #F6F6F8;
     grid-template-areas: "sidebar title" "sidebar main";
-    grid-template-columns: 200px minmax(10px, 1fr);
-    grid-template-rows: 50px minmax(10px, 1fr);
+    grid-template-columns: 250px auto;
+    grid-template-rows: 50px calc(100vh - 50px);
 }
 
 
@@ -17,10 +17,10 @@
 
 
 .sidebar {
-    width: 200px;
+/*    width: 200px;
     height: 100vh;
     position: sticky;
-    top: 0;
+    top: 0;*/
 }
 
 .topbar {
@@ -41,4 +41,5 @@
 
 .main {
     grid-area: main;
+    overflow: auto
 }

@@ -1,1 +1,37 @@
 ﻿@page "/"
+@inherits PageBase
+
+<MudButton OnClick="(e) => DrawUnitAsync()">
+    Тест
+</MudButton>
+
+<MudButton OnClick="(e) => Begin()" Disabled="(_units == null)">
+    Начать
+</MudButton>
+
+<MudButton OnClick="(e) => Move()" Disabled="(_selectedUnit == null)">
+    Двигаться
+</MudButton>
+
+<div class="d-flex p-2">
+    <MudCard Class="w3-animate-left">
+        <MudCardHeader>
+            <CardHeaderContent>
+                <MudText Typo="Typo.h6">The Story Book</MudText>
+            </CardHeaderContent>
+            <CardHeaderActions>
+                <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+            </CardHeaderActions>
+        </MudCardHeader>
+        <MudCardContent>
+            <MudText>Выбранный юнит: @_selectedUnit?.Name</MudText>
+            <MudText Typo="Typo.body2">The quick, brown fox jumps over a lazy dog.</MudText>
+        </MudCardContent>
+        <MudCardActions>
+            <MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>
+        </MudCardActions>
+    </MudCard>
+    <div class="w3-margin" style='width: @($"{Width}px"); height: @($"{Height}px")' @onclick="Test" >
+        <BECanvas Width="@Width" Height="@Height" @ref="_canvasReference"></BECanvas>
+    </div>
+</div>

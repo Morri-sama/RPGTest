@@ -10,6 +10,9 @@ namespace BlazorApp.FormEditors
     public class UnitFormContext : FormContextBase<UnitDto>
     {
         [Required]
+        public string Name { get; set; }
+
+        [Required]
         public int HP { get; set; }
 
         [Required]

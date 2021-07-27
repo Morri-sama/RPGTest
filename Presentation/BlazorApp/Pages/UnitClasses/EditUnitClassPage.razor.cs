@@ -54,7 +54,7 @@ namespace BlazorApp.Pages.UnitClasses
                                                  useMathOperators: true,
                                                  useLogicalOperators: false);
 
-            _formContext.Formula ??= result;
+            _formContext.Formula = result;
         }
 
         private async Task EditFormula2()
@@ -66,7 +66,7 @@ namespace BlazorApp.Pages.UnitClasses
                                                  useMathOperators: true,
                                                  useLogicalOperators: false);
 
-            _formContext.Formula2 ??= result;
+            _formContext.Formula2 = result;
         }
 
         private async Task EditCondition()
@@ -78,7 +78,7 @@ namespace BlazorApp.Pages.UnitClasses
                                                  useMathOperators: true,
                                                  useLogicalOperators: true);
 
-            _formContext.Condition ??= result;
+            _formContext.Condition = result;
         }
 
         private async Task EditPostTrueCondition()
@@ -90,7 +90,7 @@ namespace BlazorApp.Pages.UnitClasses
                                                  useMathOperators: true,
                                                  useLogicalOperators: false);
 
-            _formContext.PostTrueConditionAction ??= result;
+            _formContext.PostTrueConditionAction = result;
         }
 
         private async Task EditPostFalseCondition()
@@ -102,7 +102,7 @@ namespace BlazorApp.Pages.UnitClasses
                                                  useMathOperators: true,
                                                  useLogicalOperators: false);
 
-            _formContext.PostFalseConditionAction ??= result;
+            _formContext.PostFalseConditionAction = result;
         }
 
         private async Task<string> EditExpression(string expression,
