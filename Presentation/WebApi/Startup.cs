@@ -63,7 +63,7 @@ namespace WebApi
             mongoDBSettings.CollectionNames.Add("UnitClass", "UnitClasses");
 
             services.AddSingleton(mongoDBSettings);
-            services.AddSingleton<IMongoClient>(new MongoClient(@"mongodb://localhost:27017"));
+            services.AddSingleton<IMongoClient>(new MongoClient(@"mongodb://mongodbcontainer:27017"));
             services.AddScoped<IMongoDBRepository<UnitClass>, MongoDBRepository<UnitClass>>();
             services.AddScoped<IMongoDBRepository<Unit>, MongoDBRepository<Unit>>();
             services.AddScoped<ICoordinatesService, CoordinatesService>();
