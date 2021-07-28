@@ -19,6 +19,7 @@ namespace BlazorApp.Pages
         private BECanvasComponent _canvasReference;
 
         private List<UnitDto> _units;
+        private List<UnitClassDto> _unitClasses;
 
         private UnitDto _selectedUnit;
 
@@ -34,6 +35,7 @@ namespace BlazorApp.Pages
 
         protected override async Task OnInitializedAsync()
         {
+            _unitClasses = await HttpService.GetAsync<List<UnitClassDto>>("unitclasses");
             _units = await HttpService.GetAsync<List<UnitDto>>("units");
         }
 
@@ -42,11 +44,11 @@ namespace BlazorApp.Pages
             if (firstRender)
             {
                 _context = await _canvasReference.CreateCanvas2DAsync();
-                await DrawGrid();
+                await DrawGridAsync();
             }
         }
 
-        public async Task DrawGrid()
+        public async Task DrawGridAsync()
         {
             for (var i = 0; i < Width; i += 20)
             {
@@ -63,10 +65,10 @@ namespace BlazorApp.Pages
             await _context.SetStrokeStyleAsync(@"#ddd");
             await _context.StrokeAsync();
 
-            await Begin();
+            await StartAsync();
         }
 
-        public async Task Begin()
+        public async Task StartAsync()
         {
             if (_units != null)
             {
@@ -78,87 +80,80 @@ namespace BlazorApp.Pages
         }
 
 
-        public async Task DrawUnitAsync()
-        {
-            await _context.BeginPathAsync();
-
-            await _context.SetLineWidthAsync(1);
-
-            await _context.SetStrokeStyleAsync("black");
-
-            await _context.SetFillStyleAsync("red");
-
-            await _context.FillRectAsync(10, 10, 20, 20);
-
-            await _context.StrokeAsync();
-        }
-
         public async Task DrawUnitAsync(UnitDto unitDto)
         {
             var bytes = Encoding.UTF8.GetBytes(unitDto.Id);
-
             await _context.BeginPathAsync();
-
             await _context.SetLineWidthAsync(1);
-
             await _context.SetStrokeStyleAsync("black");
-
             await _context.SetFillStyleAsync($"rgb({bytes[0]}, {bytes[1]}, {bytes[2]})");
-
             await _context.FillRectAsync(unitDto.X, unitDto.Y, 20, 20);
-
             await _context.StrokeAsync();
-
             await _context.SetFontAsync("12px century-gothic, sans-serif");
-
             await _context.StrokeTextAsync(unitDto.Name, unitDto.X + 22, unitDto.Y + 12);
         }
 
-        public async Task Test(MouseEventArgs e)
+        public async Task SelectUnitAsync()
+        {
+            EventHandler handler = null;
+
+            _coordinatesChanged += handler = async (object sender, EventArgs e) =>
+            {
+                var unit = _units.Where(u => Point.X >= u.X && Point.X <= u.X + 20 && Point.Y >= u.Y && Point.Y <= u.Y + 20).FirstOrDefault();
+
+                _selectedUnit = unit;
+                this.StateHasChanged();
+                _coordinatesChanged -= handler;
+            };
+
+            _coordinatesChanged += handler;
+        }
+
+        public void SetClickedPointCoordinates(MouseEventArgs e)
         {
             double offsetX = e.OffsetX;
             double offsetY = e.OffsetY;
 
             Point = new Point(offsetX, offsetY);
 
-            if (!string.IsNullOrEmpty(_action))
-            {
-                if (_action == "передвинуться")
-                {
-                    _action = null;
+            //if (!string.IsNullOrEmpty(_action))
+            //{
+            //    if (_action == "передвинуться")
+            //    {
+            //        _action = null;
 
-                    _selectedUnit.X = (int)offsetX;
-                    _selectedUnit.Y = (int)offsetY;
+            //        _selectedUnit.X = (int)offsetX;
+            //        _selectedUnit.Y = (int)offsetY;
 
-                    await HttpService.PutAsync<UnitDto>("units", _selectedUnit);
+            //        await HttpService.PutAsync<UnitDto>("units", _selectedUnit);
 
-                    await _context.ClearRectAsync(0, 0, Width, Height);
-                    await DrawGrid();
-                    _selectedUnit = null;
-                }
-            }
-            else
-            {
-                var unit = _units.Where(u => offsetX >= u.X && offsetX <= u.X + 20 && offsetY >= u.Y && offsetY <= u.Y + 20).FirstOrDefault();
+            //        await _context.ClearRectAsync(0, 0, Width, Height);
+            //        await DrawGrid();
+            //        _selectedUnit = null;
+            //    }
+            //}
+            //else
+            //{
+            //    var unit = _units.Where(u => offsetX >= u.X && offsetX <= u.X + 20 && offsetY >= u.Y && offsetY <= u.Y + 20).FirstOrDefault();
 
-                if (unit is not null)
-                {
-                    bool? result = await DialogService.ShowMessageBox($"{unit.Id}", "Выберите действие", yesText: "Передвинуться", cancelText: "Cancel");
-                    string state = result == null ? "Cancelled" : "передвинуться";
+            //    if (unit is not null)
+            //    {
+            //        bool? result = await DialogService.ShowMessageBox($"{unit.Id}", "Выберите действие", yesText: "Передвинуться", cancelText: "Cancel");
+            //        string state = result == null ? "Cancelled" : "передвинуться";
 
-                    if (state == "передвинуться")
-                    {
-                        _action = "передвинуться";
-                        _selectedUnit = unit;
-                    }
-                }
-            }
+            //        if (state == "передвинуться")
+            //        {
+            //            _action = "передвинуться";
+            //            _selectedUnit = unit;
+            //        }
+            //    }
+            //}
 
-            var unit2 = _units.Where(u => offsetX >= u.X && offsetX <= u.X + 20 && offsetY >= u.Y && offsetY <= u.Y + 20).FirstOrDefault();
-            _selectedUnit = unit2;
+            //var unit2 = _units.Where(u => offsetX >= u.X && offsetX <= u.X + 20 && offsetY >= u.Y && offsetY <= u.Y + 20).FirstOrDefault();
+            //_selectedUnit = unit2;
         }
 
-        public async Task Move()
+        public async Task MoveAsync()
         {
             EventHandler handler = null;
 
@@ -170,7 +165,9 @@ namespace BlazorApp.Pages
                 await HttpService.PutAsync<UnitDto>("units", _selectedUnit);
 
                 await _context.ClearRectAsync(0, 0, Width, Height);
-                await DrawGrid();
+                await DrawGridAsync();
+
+                this.StateHasChanged();
 
                 _coordinatesChanged -= handler;
             };

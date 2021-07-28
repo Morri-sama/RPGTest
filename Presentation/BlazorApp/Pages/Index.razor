@@ -1,37 +1,43 @@
 ﻿@page "/"
 @inherits PageBase
 
-<MudButton OnClick="(e) => DrawUnitAsync()">
-    Тест
-</MudButton>
 
-<MudButton OnClick="(e) => Begin()" Disabled="(_units == null)">
+<MudButton OnClick="(e) => StartAsync()" Disabled="(_units == null)">
     Начать
 </MudButton>
 
-<MudButton OnClick="(e) => Move()" Disabled="(_selectedUnit == null)">
+<MudButton OnClick="(e) => SelectUnitAsync()">
+    Выбрать юнита
+</MudButton>
+
+<MudButton OnClick="(e) => MoveAsync()" Disabled="(_selectedUnit == null)">
     Двигаться
 </MudButton>
 
-<div class="d-flex p-2">
-    <MudCard Class="w3-animate-left">
+<div class="d-flex p-2 ">
+    <MudCard Class="w3-animate-left" Style="max-height: 500px;">
         <MudCardHeader>
+            <CardHeaderAvatar>
+                <MudAvatar Color="Color.Secondary">@_selectedUnit?.Name</MudAvatar>
+            </CardHeaderAvatar>
             <CardHeaderContent>
-                <MudText Typo="Typo.h6">The Story Book</MudText>
+                <MudText Typo="Typo.body1">@_selectedUnit?.Name</MudText>
+                <MudText Typo="Typo.body2">@_unitClasses?.Where(uc => uc.Id == _selectedUnit?.ClassId).FirstOrDefault()?.Name</MudText>
             </CardHeaderContent>
             <CardHeaderActions>
                 <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
             </CardHeaderActions>
         </MudCardHeader>
+        <MudCardMedia Image="https://i.imgur.com/M35x6F1.jpg" Height="180" />
         <MudCardContent>
-            <MudText>Выбранный юнит: @_selectedUnit?.Name</MudText>
-            <MudText Typo="Typo.body2">The quick, brown fox jumps over a lazy dog.</MudText>
+            <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>
         </MudCardContent>
         <MudCardActions>
-            <MudButton Variant="Variant.Text" Color="Color.Primary">Read More</MudButton>
+            <MudIconButton Icon="@Icons.Material.Filled.Favorite" Color="Color.Default" />
+            <MudIconButton Icon="@Icons.Material.Filled.Share" Color="Color.Default" />
         </MudCardActions>
     </MudCard>
-    <div class="w3-margin" style='width: @($"{Width}px"); height: @($"{Height}px")' @onclick="Test" >
+    <div class="w3-margin" style='width: @($"{Width}px"); height: @($"{Height}px")' @onclick="SetClickedPointCoordinates">
         <BECanvas Width="@Width" Height="@Height" @ref="_canvasReference"></BECanvas>
     </div>
 </div>
