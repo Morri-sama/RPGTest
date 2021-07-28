@@ -1,0 +1,29 @@
+﻿.wrapper {
+    display: grid;
+    grid-template-areas: "selectedUnit gameGrid units" "selectedUnit gameGrid xdd";
+    grid-template-columns: 250px 1fr 250px;
+    grid-template-rows: 50vh 50vh;
+}
+
+.selectedUnit {
+    grid-area: selectedUnit;
+}
+
+.gameGrid {
+    background-image: url(https://mir-s3-cdn-cf.behance.net/project_modules/1400_opt_1/43bff762974361.5aa1a2adb2a54.jpg);
+    grid-area: gameGrid;
+    overflow-x: auto;
+    overflow-y: auto;
+}
+
+.attackedUnit {
+    grid-area: attackedUnit;
+}
+
+.units {
+    grid-area: units;
+}
+
+.xdd {
+    grid-area: xdd;
+}

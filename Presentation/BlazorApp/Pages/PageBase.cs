@@ -27,5 +27,8 @@ namespace BlazorApp.Pages
 
         [Inject]
         public IDialogService DialogService { get; init; }
+
+        [Inject]
+        public ISnackbar Snackbar { get; init; }
     }
 }

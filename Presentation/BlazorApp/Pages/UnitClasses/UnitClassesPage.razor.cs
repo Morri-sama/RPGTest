@@ -49,6 +49,8 @@ namespace BlazorApp.Pages.UnitClasses
             if (!dialog.Cancelled)
             {
                 await HttpService.DeleteAsync($"unitclasses/{unitClass.Id}");
+                await HttpService.DeleteAsync($"unitclasses/{unitClass.Id}");
+
             }
         }
     }

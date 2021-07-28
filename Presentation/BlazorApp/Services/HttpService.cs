@@ -24,6 +24,14 @@ namespace BlazorApp.Services
             return await SendRequestAsync<T>(request);
         }
 
+        public async Task<Response> GetAsync(string uri)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            return await SendRequestAsync(request, string.Empty);
+        }
+
+
+
         public async Task<T> PostAsync<T>(string uri, object value)
         {
             var request = new HttpRequestMessage(HttpMethod.Post, uri);
@@ -31,11 +39,23 @@ namespace BlazorApp.Services
             return await SendRequestAsync<T>(request);
         }
 
+        public async Task PostAsync(string uri)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, uri);
+            await SendRequestAsync(request);
+        }
+
         public async Task<T> PutAsync<T>(string uri, object value)
         {
             var request = new HttpRequestMessage(HttpMethod.Put, uri);
             request.Content = new StringContent(JsonSerializer.Serialize(value), Encoding.UTF8, "application/json");
             return await SendRequestAsync<T>(request);
+        }
+
+        public async Task PutAsync(string uri)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Put, uri);
+            await SendRequestAsync(request);
         }
 
         public async Task DeleteAsync(string uri)
@@ -62,5 +82,41 @@ namespace BlazorApp.Services
             using var response = await _httpClient.SendAsync(request);
         }
 
+        private async Task<Response<T>> SendRequestAsync<T>(HttpRequestMessage request, string xdd)
+        {
+            using var response = await _httpClient.SendAsync(request);
+
+            Response<T> response2 = new Response<T>()
+            {
+                IsSuccess = response.IsSuccessStatusCode,
+                StatusCode = (int)response.StatusCode,
+                Message = response.ReasonPhrase,
+                ResponseData = await response.Content.ReadFromJsonAsync<T>()
+            };
+
+            return response2;
+        }
+
+
+        private async Task<Response> SendRequestAsync(HttpRequestMessage request, string xdd)
+        {
+            using var response = await _httpClient.SendAsync(request);
+
+            Response response2 = new Response()
+            {
+                IsSuccess = response.IsSuccessStatusCode,
+                StatusCode = (int)response.StatusCode,
+                Message = response.ReasonPhrase
+            };
+
+            return response2;
+        }
+
+        public async Task<Response<T>> GetAsync<T>(string uri, string xdd)
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, uri);
+            return await SendRequestAsync<T>(request, string.Empty);
+        }
     }
 }
+

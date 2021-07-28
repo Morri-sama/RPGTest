@@ -9,11 +9,7 @@
         <NavMenu @ref="_navMenu" />
     </div>
 
-    <MudToolBar Class="title">
-        
-    </MudToolBar>
-
-    <div class="main" style="margin-top:12px; padding-bottom: 32px;">
+    <div class="main">
 
         <CascadingValue Value="this">
             @Body
@@ -25,7 +21,7 @@
 @code{
     protected override void OnInitialized()
     {
-      
+        
     }
 
     private NavMenu _navMenu;

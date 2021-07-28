@@ -2,42 +2,90 @@
 @inherits PageBase
 
 
-<MudButton OnClick="(e) => StartAsync()" Disabled="(_units == null)">
-    Начать
-</MudButton>
 
-<MudButton OnClick="(e) => SelectUnitAsync()">
-    Выбрать юнита
-</MudButton>
 
-<MudButton OnClick="(e) => MoveAsync()" Disabled="(_selectedUnit == null)">
-    Двигаться
-</MudButton>
+<div class="wrapper">
+    @if (_selectedUnit != null)
+    {
+        <MudCard Class="w3-animate-left selectedUnit w3-margin">
+            <MudCardHeader>
+                <CardHeaderAvatar>
+                    <MudAvatar Color="Color.Secondary">@_selectedUnit?.Name?.FirstOrDefault()</MudAvatar>
+                </CardHeaderAvatar>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.body1">@_selectedUnit?.Name</MudText>
+                    <MudText Typo="Typo.body2">Класс: @_unitClasses?.Where(uc => uc.Id == _selectedUnit?.ClassId).FirstOrDefault()?.Name</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardMedia Image="https://i.imgur.com/M35x6F1.jpg" Height="120" />
+            <MudCardContent>
+                <MudText Typo="Typo.subtitle2">Здоровье: @_selectedUnit?.HP / @_selectedUnit?.MaxHP</MudText>
+                <MudText Typo="Typo.subtitle2">Мана: @_selectedUnit?.Mana / @_selectedUnit?.MaxMana</MudText>
+                <MudText Typo="Typo.subtitle2">Броня: @_selectedUnit?.Armor</MudText>
+                <MudText Typo="Typo.subtitle2">Маг. сопротивление: @_selectedUnit?.MagicResist</MudText>
+                <MudText Typo="Typo.subtitle2">Базовый урон: @_unitClasses?.Where(uc => uc.Id == _selectedUnit?.ClassId).FirstOrDefault()?.BaseDamage</MudText>
+                <MudText Typo="Typo.subtitle2">Атака: @_unitClasses?.Where(uc => uc.Id == _selectedUnit?.ClassId).FirstOrDefault()?.AttackType</MudText>
+                <MudText Typo="Typo.subtitle2">Вид урона: @_unitClasses?.Where(uc => uc.Id == _selectedUnit?.ClassId).FirstOrDefault()?.DamageType</MudText>
+            </MudCardContent>
+            <MudCardActions>
+                <MudButton OnClick="(e) => MoveAsync()" Disabled="(_selectedUnit == null)">
+                    Идти
+                </MudButton>
+                <MudButton OnClick="(e) => AttackAsync()" Disabled="(_selectedUnit == null)" Color="Color.Error">
+                    Атаковать
+                </MudButton>
+            </MudCardActions>
+        </MudCard>
+    }
+    else
+    {
+        <div class="selectedUnit"></div>
+    }
 
-<div class="d-flex p-2 ">
-    <MudCard Class="w3-animate-left" Style="max-height: 500px;">
-        <MudCardHeader>
-            <CardHeaderAvatar>
-                <MudAvatar Color="Color.Secondary">@_selectedUnit?.Name</MudAvatar>
-            </CardHeaderAvatar>
-            <CardHeaderContent>
-                <MudText Typo="Typo.body1">@_selectedUnit?.Name</MudText>
-                <MudText Typo="Typo.body2">@_unitClasses?.Where(uc => uc.Id == _selectedUnit?.ClassId).FirstOrDefault()?.Name</MudText>
-            </CardHeaderContent>
-            <CardHeaderActions>
-                <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
-            </CardHeaderActions>
-        </MudCardHeader>
-        <MudCardMedia Image="https://i.imgur.com/M35x6F1.jpg" Height="180" />
-        <MudCardContent>
-            <MudText Typo="Typo.body2">This photo was taken in a small village in Istra Croatia.</MudText>
-        </MudCardContent>
-        <MudCardActions>
-            <MudIconButton Icon="@Icons.Material.Filled.Favorite" Color="Color.Default" />
-            <MudIconButton Icon="@Icons.Material.Filled.Share" Color="Color.Default" />
-        </MudCardActions>
-    </MudCard>
-    <div class="w3-margin" style='width: @($"{Width}px"); height: @($"{Height}px")' @onclick="SetClickedPointCoordinates">
+    @if (_attackedUnit != null)
+    {
+        <MudCard Class="w3-animate-left selectedUnit w3-margin">
+            <MudCardHeader>
+                <CardHeaderAvatar>
+                    <MudAvatar Color="Color.Secondary">@_selectedUnit?.Name?.FirstOrDefault()</MudAvatar>
+                </CardHeaderAvatar>
+                <CardHeaderContent>
+                    <MudText Typo="Typo.body1">@_attackedUnit?.Name</MudText>
+                    <MudText Typo="Typo.body2">Класс: @_unitClasses?.Where(uc => uc.Id == _attackedUnit?.ClassId).FirstOrDefault()?.Name</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardMedia Image="https://i.imgur.com/M35x6F1.jpg" Height="120" />
+            <MudCardContent>
+                <MudText Typo="Typo.subtitle2">Здоровье: @_selectedUnit?.HP / @_selectedUnit?.MaxHP</MudText>
+                <MudText Typo="Typo.subtitle2">Мана: @_attackedUnit?.Mana / @_selectedUnit?.MaxMana</MudText>
+                <MudText Typo="Typo.subtitle2">Броня: @_attackedUnit?.Armor</MudText>
+                <MudText Typo="Typo.subtitle2">Маг. сопротивление: @_selectedUnit?.MagicResist</MudText>
+                <MudText Typo="Typo.subtitle2">Базовый урон: @_unitClasses?.Where(uc => uc.Id == _attackedUnit?.ClassId).FirstOrDefault()?.BaseDamage</MudText>
+                <MudText Typo="Typo.subtitle2">Атака: @_unitClasses?.Where(uc => uc.Id == _attackedUnit?.ClassId).FirstOrDefault()?.AttackType</MudText>
+                <MudText Typo="Typo.subtitle2">Вид урона: @_unitClasses?.Where(uc => uc.Id == _attackedUnit?.ClassId).FirstOrDefault()?.DamageType</MudText>
+            </MudCardContent>
+        </MudCard>
+    }
+    else
+    {
+        <div class="attackedUnit"></div>
+    }
+
+
+    <div class="gameGrid w3-margin" @onclick="SetClickedPointCoordinates">
         <BECanvas Width="@Width" Height="@Height" @ref="_canvasReference"></BECanvas>
     </div>
+
+    <div class="units w3-margin">
+        <MudButton OnClick="(e) => StartAsync()" Disabled="(_units == null)">
+            Начать
+        </MudButton>
+
+        <MudButton OnClick="(e) => SelectUnitAsync()" Disabled="(_units == null)">
+            Выбрать юнита
+        </MudButton>
+    </div>
+    <div class="xdd w3-margin"></div>
 </div>
+
+@*style='width: 100%; height: 100%;  overflow: scroll; overflow-y: scroll' *@

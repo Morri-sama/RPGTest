@@ -14,6 +14,7 @@ using RPGTest.Core.Infrastructure;
 using RPGTest.Core.Infrastructure.Settings;
 using RPGTest.Core.Services;
 using System;
+using System.Linq;
 using WebApi.AutoMapper.Profiles;
 using static RPGTest.Core.Domain.Enums;
 
@@ -86,6 +87,53 @@ namespace WebApi
                 typeof(UnitClassProfile)
             });
 
+            var builder = services.BuildServiceProvider();
+
+            var mongoClient = builder.GetRequiredService<IMongoClient>();
+            var unitClassService = builder.GetRequiredService<IUnitClassService>();
+
+            var filter = new BsonDocument("name", "UnitClasses");
+            var options = new ListCollectionNamesOptions { Filter = filter };
+
+            var x = mongoClient.GetDatabase("RPG").ListCollectionNames(options).Any();
+
+            if (!x)
+            {
+                var warriorUnitClass = new UnitClass()
+                {
+                    AttackType = AttackType.Melee,
+                    DamageType = DamageType.Physical,
+                    BaseDamage = 100,
+                    Formula = "Ѕазовый”рон * Ќедостающее«доровье / ћаксимальное«доровье * Ѕазовый”рон",
+                    Name = "¬оин"
+                };
+
+                var archerUnitClass = new UnitClass()
+                {
+                    AttackType = AttackType.Range,
+                    DamageType = DamageType.Physical,
+                    BaseDamage = 80,
+                    Formula = "Ѕазовый”рон + ƒистанци€ƒо÷ели / –адиусјтаки * Ѕазовый”рон",
+                    Name = "Ћучник"
+                };
+
+                var mageUnitClass = new UnitClass()
+                {
+                    AttackType = AttackType.Magical,
+                    DamageType = DamageType.Magical,
+                    BaseDamage = 95,
+                    Formula = "Ѕазовый”рон * 2",
+                    Formula2 = "ќкруглить¬ћеньшую—торону ( Ѕазовый”рон / 2 )",
+                    Condition = "“екуща€ћана > 0 ",
+                    PostTrueConditionAction = "ќкруглить¬Ѕольшую—торону ( “екуща€ћана / 2 )",
+                    TrueConditionActionChangeableProperty = "“екуща€ћана",
+                    Name="ћаг"
+                };
+
+                unitClassService.Insert(warriorUnitClass);
+                unitClassService.Insert(archerUnitClass);
+                unitClassService.Insert(mageUnitClass);
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

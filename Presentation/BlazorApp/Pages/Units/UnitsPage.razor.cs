@@ -36,6 +36,18 @@ namespace BlazorApp.Pages.Units
             NavigationManager.NavigateTo($"/units/edit/{id}");
         }
 
+        private async Task ResetUnit(UnitDto unit)
+        {
+            unit.X = 0;
+            unit.Y = 0;
+            unit.HP = unit.MaxHP;
+            unit.Mana = unit.MaxMana;
+
+            await HttpService.PutAsync<UnitDto>("units", unit);
+
+            _unitClasses = await HttpService.GetAsync<List<UnitClassDto>>("unitclasses");
+        }
+
         private async Task DeleteUnit(UnitDto unit)
         {
             var parameters = new DialogParameters();
@@ -50,6 +62,7 @@ namespace BlazorApp.Pages.Units
             if (!dialog.Cancelled)
             {
                 await HttpService.DeleteAsync($"units/{unit.Id}");
+                _units = await HttpService.GetAsync<List<UnitDto>>("units");
             }
         }
     }

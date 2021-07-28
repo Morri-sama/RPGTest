@@ -23,19 +23,26 @@ namespace RPGTest.Core.Services
             _unitClassService = unitClassService;
         }
 
-        public void Attack(Unit attacker, Unit attackedUnit)
+        public void Attack(Unit attackerUnit, Unit attackedUnit)
         {
-            bool canAttack = CanAttack(attacker.Id, attackedUnit.Id);
+            bool canAttack = CanAttack(attackerUnit.Id, attackedUnit.Id);
 
             if (canAttack)
             {
-                var damage = CalculateDamage(attacker.Id, attackedUnit.Id);
+                var damage = CalculateDamage(attackerUnit.Id, attackedUnit.Id);
 
                 var x = attackedUnit.HP - damage;
 
                 attackedUnit.HP = x >= 0 ? x : 0;
 
                 Update(attackedUnit);
+
+                var distance = _coordinatesService.CalculateDistance(x1: attackerUnit.X,
+                                                                     y1: attackerUnit.Y,
+                                                                     x2: attackedUnit.X,
+                                                                     y2: attackedUnit.Y);
+
+                ExecActionAfterCondition(attackerUnit.Id, distance);
             }
         }
 
@@ -117,7 +124,7 @@ namespace RPGTest.Core.Services
                 _ = unitClass.TrueConditionActionChangeableProperty switch
                 {
                     "ТекущееЗдоровье" => unit.HP = fieldNewValue <= unit.MaxHP && fieldNewValue >= 0 ? fieldNewValue : throw new Exception(nameof(fieldNewValue)),
-                    "ТекушаяМана" => unit.Mana = fieldNewValue <= unit.MaxMana && fieldNewValue >=0 ? fieldNewValue : throw new Exception(nameof(fieldNewValue)),
+                    "ТекущаяМана" => unit.Mana = fieldNewValue <= unit.MaxMana && fieldNewValue >= 0 ? fieldNewValue : throw new Exception(nameof(fieldNewValue)),
                     _ => throw new ArgumentOutOfRangeException()
                 };
             }
@@ -129,7 +136,7 @@ namespace RPGTest.Core.Services
                 _ = unitClass.FalseConditionActionChangeableProperty switch
                 {
                     "ТекущееЗдоровье" => unit.HP = fieldNewValue <= unit.MaxHP && fieldNewValue >= 0 ? fieldNewValue : throw new Exception(nameof(fieldNewValue)),
-                    "ТекушаяМана" => unit.Mana = fieldNewValue <= unit.MaxMana && fieldNewValue >= 0 ? fieldNewValue : throw new Exception(nameof(fieldNewValue)),
+                    "ТекущаяМана" => unit.Mana = fieldNewValue <= unit.MaxMana && fieldNewValue >= 0 ? fieldNewValue : throw new Exception(nameof(fieldNewValue)),
                     _ => throw new ArgumentOutOfRangeException()
                 };
             }
@@ -139,16 +146,31 @@ namespace RPGTest.Core.Services
 
         private string SetFormulaVariables(string condition, Unit unit, UnitClass unitClass, double distance)
         {
+            if(condition == null)
+            {
+                return string.Empty;
+            }
+
             string result = string.Empty;
 
-            result = Regex.Replace(condition, "БазовыйУрон", unitClass.BaseDamage.ToString());
-            result = Regex.Replace(condition, "НедостающееЗдоровье", (unit.MaxHP - unit.HP).ToString());
-            result = Regex.Replace(condition, "МаксимальноеЗдоровье", unit.MaxHP.ToString());
-            result = Regex.Replace(condition, "ДистанцияДоЦели", distance.ToString());
-            result = Regex.Replace(condition, "РадиусАтаки", ((int)unitClass.AttackType).ToString());
-            result = Regex.Replace(condition, "ТекущаяМана", unit.Mana.ToString());
-            result = Regex.Replace(condition, "ОкруглитьВБольшуюСторону", "ceil");
-            result = Regex.Replace(condition, "ОкруглитьВБольшуюСторону", "floor");
+            //result = Regex.Replace(condition, @"БазовыйУрон", unitClass.BaseDamage.ToString());
+            //result = Regex.Replace(condition, "НедостающееЗдоровье", (unit.MaxHP - unit.HP).ToString());
+            //result = Regex.Replace(condition, "МаксимальноеЗдоровье", unit.MaxHP.ToString());
+            //result = Regex.Replace(condition, "ДистанцияДоЦели", distance.ToString());
+            //result = Regex.Replace(condition, "РадиусАтаки", ((int)unitClass.AttackType).ToString());
+            //result = Regex.Replace(condition, "ТекущаяМана", unit.Mana.ToString());
+            //result = Regex.Replace(condition, "ОкруглитьВБольшуюСторону", "ceil");
+            //result = Regex.Replace(condition, "ОкруглитьВБольшуюСторону", "floor");
+
+            result = Regex.Replace(condition, @"\bБазовыйУрон\b", unitClass.BaseDamage.ToString());
+            result = Regex.Replace(result, @"\bНедостающееЗдоровье\b", (unit.MaxHP - unit.HP).ToString());
+            result = Regex.Replace(result, @"\bМаксимальноеЗдоровье\b", unit.MaxHP.ToString());
+            result = Regex.Replace(result, @"\bДистанцияДоЦели\b", distance.ToString());
+            result = Regex.Replace(result, @"\bРадиусАтаки\b", ((int)unitClass.AttackType).ToString());
+            result = Regex.Replace(result, @"\bТекущаяМана\b", unit.Mana.ToString());
+            result = Regex.Replace(result, @"\bОкруглитьВБольшуюСторону\b", "ceil");
+            result = Regex.Replace(result, @"\bОкруглитьВБольшуюСторону\b", "floor");
+            result = Regex.Replace(result, @"\s+", "");
             return result;
         }
 

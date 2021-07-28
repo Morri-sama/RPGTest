@@ -76,5 +76,56 @@ namespace WebApi.Controllers
 
             return NoContent();
         }
+
+        [HttpGet("{attackerUnitId}/attack/{attackedUnitId}")]
+        public IActionResult Attack(string attackerUnitId, string attackedUnitId)
+        {
+            if (string.IsNullOrEmpty(attackerUnitId))
+            {
+                return BadRequest();
+            }
+
+            if (string.IsNullOrEmpty(attackedUnitId))
+            {
+                return BadRequest();
+            }
+
+            if(attackerUnitId == attackedUnitId)
+            {
+                return BadRequest("Два одинаковых ID");
+            }
+
+            bool canAttack = _unitService.CanAttack(attackerUnitId, attackedUnitId);
+
+            if (!canAttack)
+            {
+                return BadRequest("Нельзя атаковать");
+            }
+
+            var attackerUnit = _unitService.GetById(attackerUnitId);
+            var attackedUnit = _unitService.GetById(attackedUnitId);
+
+            _unitService.Attack(attackerUnit, attackedUnit);
+
+            return NoContent();
+        }
+
+        [HttpGet("{attackerUnitId}/canattack/{attackedUnitId}")]
+        public IActionResult CanAttack(string attackerUnitId, string attackedUnitId)
+        {
+            if (string.IsNullOrEmpty(attackerUnitId))
+            {
+                return BadRequest();
+            }
+
+            if (string.IsNullOrEmpty(attackedUnitId))
+            {
+                return BadRequest();
+            }
+
+            bool canAttack = _unitService.CanAttack(attackerUnitId, attackedUnitId);
+
+            return Ok(canAttack);
+        }
     }
 }
