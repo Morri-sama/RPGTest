@@ -17,3 +17,11 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+
+  blazorapp:
+     image: blazorapp
+     build:
+       context: .
+       dockerfile: /Presentation/BlazorApp/Dockerfile
+     ports:
+       - 8080:80

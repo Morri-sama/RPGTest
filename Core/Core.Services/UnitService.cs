@@ -153,15 +153,6 @@ namespace RPGTest.Core.Services
 
             string result = string.Empty;
 
-            //result = Regex.Replace(condition, @"БазовыйУрон", unitClass.BaseDamage.ToString());
-            //result = Regex.Replace(condition, "НедостающееЗдоровье", (unit.MaxHP - unit.HP).ToString());
-            //result = Regex.Replace(condition, "МаксимальноеЗдоровье", unit.MaxHP.ToString());
-            //result = Regex.Replace(condition, "ДистанцияДоЦели", distance.ToString());
-            //result = Regex.Replace(condition, "РадиусАтаки", ((int)unitClass.AttackType).ToString());
-            //result = Regex.Replace(condition, "ТекущаяМана", unit.Mana.ToString());
-            //result = Regex.Replace(condition, "ОкруглитьВБольшуюСторону", "ceil");
-            //result = Regex.Replace(condition, "ОкруглитьВБольшуюСторону", "floor");
-
             result = Regex.Replace(condition, @"\bБазовыйУрон\b", unitClass.BaseDamage.ToString());
             result = Regex.Replace(result, @"\bНедостающееЗдоровье\b", (unit.MaxHP - unit.HP).ToString());
             result = Regex.Replace(result, @"\bМаксимальноеЗдоровье\b", unit.MaxHP.ToString());
@@ -169,7 +160,7 @@ namespace RPGTest.Core.Services
             result = Regex.Replace(result, @"\bРадиусАтаки\b", ((int)unitClass.AttackType).ToString());
             result = Regex.Replace(result, @"\bТекущаяМана\b", unit.Mana.ToString());
             result = Regex.Replace(result, @"\bОкруглитьВБольшуюСторону\b", "ceil");
-            result = Regex.Replace(result, @"\bОкруглитьВБольшуюСторону\b", "floor");
+            result = Regex.Replace(result, @"\bОкруглитьВМеньшуюСторону\b", "floor");
             result = Regex.Replace(result, @"\s+", "");
             return result;
         }
